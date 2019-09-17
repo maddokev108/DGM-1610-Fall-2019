@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class CameraFollowScript : MonoBehaviour
 {
-    public float speed = 20;
+
+    public GameObject player;
+    private Vector3 offset = new Vector3(-6, 4, -9);
 
     // Start is called before the first frame update
     void Start()
@@ -15,7 +17,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //This code makes the vehicle move.
-        transform.Translate(Vector3.forward*Time.deltaTime*speed);
+        transform.position = player.transform.position + offset;
     }
 }
