@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public float horInput;
     public float speed = 90;
-    private float xRange = 10;
+    private float xRange = 15;
+    public GameObject projectilePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,12 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
         }
 
+        //This statement checks for the space key input
+        if ( Input.GetKeyDown(KeyCode.Space) ) 
+        {
+            //Fire food
+            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+        }
 
         //This makes the player move
         horInput = Input.GetAxis("Horizontal");
