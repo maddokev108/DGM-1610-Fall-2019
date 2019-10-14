@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//may not end up using this script.
+
 public class CameraFollow : MonoBehaviour
 {
     public GameObject player;
