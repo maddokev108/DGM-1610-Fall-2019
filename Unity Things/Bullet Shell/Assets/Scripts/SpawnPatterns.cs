@@ -23,11 +23,11 @@ public class SpawnPatterns : MonoBehaviour
     {
         //Chooses random off-screen position
         int rand = (( Random.Range(1, 3) - 1 ) * 2) - 1; //Steps: |1. RNG| 1 or 2. |2. N-1| 0 or 1. |3. N*2| 0 or 2. |4. N-1| -1 or 1.
-        float xPos = ( 21.8f * Random.Range(1.0f, 1.25f) + 7) * rand;
+        float xPos = ( 25.0f * Random.Range(1.0f, 1.25f) + 7) * rand;
         rand = (( Random.Range(1, 3) - 1 ) * 2) - 1;
         float zPos = ( 10.0f * Random.Range(1.0f, 1.5f) + 7) * rand;
 
-        //Chooses an angle facing the play area
+        //Chooses an angle facing the play area. 
         rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-30.0f, 30.0f); 
 
         //Instantiates the pattern, then rotates it to face the play area.
