@@ -103,14 +103,14 @@ public class BulletMovement : MonoBehaviour
                     dth = epsilon * speed;
                     theta += dth * directionModifier; // * Time.deltaTime;
                     radius = Mathf.Sin(2*theta);
-
                     break;
+
                 case 1:
                     dth = epsilon * speed;
                     theta += dth * directionModifier; // * Time.deltaTime;
                     radius = Mathf.Cos((3/5)*theta);
-
                     break;
+                    
                 default:
                     Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
                     break;
