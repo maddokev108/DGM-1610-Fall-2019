@@ -170,6 +170,7 @@ MonoBehaviour:
   jumpForce: 0
   grounded: 1
   gravityModifier: 2
+  gameOver: 0
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +473,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
       propertyPath: m_Name
-      value: SimplePeople_RoadWorker_White
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0703a1849c2c89b4db4568688faf0c5f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -534,7 +535,7 @@ GameObject:
   - component: {fileID: 2014335012}
   m_Layer: 9
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -667,6 +668,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Crate_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4935492934629441468, guid: f2eda7b2bcd06c84fa751df0336c236d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     - target: {fileID: 4935492934629671720, guid: f2eda7b2bcd06c84fa751df0336c236d,
         type: 3}
