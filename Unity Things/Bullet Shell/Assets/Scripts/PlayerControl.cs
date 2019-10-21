@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour
     // private float turnSpeed = 90f;
     private float horizontalInput;
     private float forwardInput;
+    internal bool hidden = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,5 +26,11 @@ public class PlayerControl : MonoBehaviour
         //This code makes the player move
         transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
         transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
+
+        if( !hidden && Input.GetAxisRaw("Hide") != 0 )
+        {
+            speed = 0;
+            hidden = true;
+        }
     }
 }

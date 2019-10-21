@@ -12,6 +12,9 @@ public class SpawnPatterns : MonoBehaviour
 {
     public GameObject patternPrefab;
     public float rot;
+    private float xBound = 17.8f;
+    private float zBound = 10.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +26,9 @@ public class SpawnPatterns : MonoBehaviour
     {
         //Chooses random off-screen position
         int rand = (( Random.Range(1, 3) - 1 ) * 2) - 1; //Steps: |1. RNG| 1 or 2. |2. N-1| 0 or 1. |3. N*2| 0 or 2. |4. N-1| -1 or 1.
-        float xPos = ( 25.0f * Random.Range(1.0f, 1.25f) + 7) * rand;
+        float xPos = ( xBound * Random.Range(1.0f, 1.25f) + 7) * rand;
         rand = (( Random.Range(1, 3) - 1 ) * 2) - 1;
-        float zPos = ( 10.0f * Random.Range(1.0f, 1.5f) + 7) * rand;
+        float zPos = ( zBound * Random.Range(1.0f, 1.5f) + 7) * rand;
 
         //Chooses an angle facing the play area. 
         rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-30.0f, 30.0f); 
