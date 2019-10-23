@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public float speed = 20f;
-    // private float turnSpeed = 90f;
     private float horizontalInput;
     private float forwardInput;
     internal bool hidden = false;
