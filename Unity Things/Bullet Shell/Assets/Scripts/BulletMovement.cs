@@ -4,138 +4,77 @@ using UnityEngine;
 
 /*
     NOTE TO SELF: WHAT THIS SCRIPT DOES
-      - Updates the Bullet's position along the pattern's path.
-             1. Gets the parent's patternType to see if it's polar or rectangular.
-             2. Gets the parent's graphIndex to see what calculation to use.
-             
-            IF RECTANGULAR:
-             3. Follows 1 of these 2 processes (uses a switch statement):
-                    Equation-Based:
-                      4. increments the value of X.
-                      5. calculates the value of z as a function of x.
-                    
-                    X and Z are Independent:
-                      4. changes X
-                      5. changes Z
-                EXITS THE SWITCH
-                EXITS THE IF-ELSE-IF
-            IF POLAR:
-                In a Switch Statement, where each case stores some different graph shape:
-                 3. Increments the value of theta.
-                 4. Calculates radius as a function of theta
-                EXITS THE SWITCH
-             5. Calculates X as radius*cos(theta)
-             6. Calculates Z as radius*sin(theta)
-            EXITS THE IF-ELSE-IF
-             7. Moves the bullet to the new X/Z coordinates.
+      - Sets 
+
  */
+
+
 
 public class BulletMovement : MonoBehaviour
 {
-    //properties controlling the bullet's behaviour
-    public int patternType;
-    public int graphIndex;
-    public string[] graphRectList;
-    public string[] graphPolList;
-    public int directionModifier;
-    public float speed;
-    public float bulletID; //mostly just used for determining the initial x/z position and/or the initial value of theta. 
 
-    public float epsilon = 10.0f; //a very small float.
-
-    //pattern boundaries
-    private float xBound = 3;
-    private float zBound = 7;    
-
-    //polar variable set
-    public float radius;
-    public float dr; //delta radius
-    public float theta = 0; //for now, just starts at 0. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
-    public float dth; //delta theta
-    public float size = 1; //used for scaling the graph.
-
-    //rectangular variable set
-    public float xPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
-    public float dx; //delta x
-    public float zPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
-    public float dz; //delta z
-
+    private float theta;
+    private float deltaTheta;
+    private float radius;
+    private float customEpsilon = .1f; //A very small float. Used for incrementing.
+    
+    //internal, so that the SpawnBullets method in PatternController can access these.
+    internal int bulletID; //based on the spawn order of the bullets in the pattern.
+    internal float size; //scale of the pattern
+    internal float speed; //speed multiplier for the bullet's movement.
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        //Initialize variables
+        theta = 0 * Mathf.PI; //NOTE FOR LATER: initialize theta based on the bulletID, such that the bullets are evenly distributed across the pattern.
+        transform.position = (new Vector3(0, 0, 0));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (patternType == 1)
-        {
-            /*temp disable.
-            switch(graphIndex)
-            {
-                case 0:
-                    dx = epsilon;
-                    dz = epsilon;
-                    xPos = xPos + (dx * speed * directionModifier * Time.deltaTime);
-                    zPos = zPos + (dz * speed * directionModifier * Time.deltaTime);
-                    break;
-                case 1:
-                    goto case 1;
-                default:
-                    Debug.Log("error: no case specified for graph type " + graphRectList[graphIndex]);
-                    break;
-            }
-            dx = xPos-transform.position.x;
-            dz = zPos-transform.position.z;
-            transform.Translate(new Vector3(dx, 0, dz));
-            boundCheck();
-            */
-            patternType = 2;
-        }
-        else if (patternType == 2)
-        {
-            switch(graphIndex)
-            {
-                case 0:
-                    dth = epsilon * speed;
-                    theta += dth * directionModifier; // * Time.deltaTime;
-                    radius = Mathf.Sin(2*theta);
-                    break;
+        //Increments theta.
+        deltaTheta = customEpsilon * speed * Time.deltaTime * Mathf.PI; //NOTE FOR LATER: update deltaTheta here by setting it to ApproximateDeltaTheta();
+            Debug.Log("deltaTheta: " + deltaTheta);
+        theta += deltaTheta; //NOTE FOR LATER: change theta's value by deltaTheta
+            Debug.Log("theta: " + theta);
 
-                case 1:
-                    dth = epsilon * speed;
-                    theta += dth * directionModifier; // * Time.deltaTime;
-                    radius = Mathf.Cos((3/5)*theta);
-                    break;
-                    
-                default:
-                    Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
-                    break;
-            }
-        xPos = radius*Mathf.Cos(theta);//*size;
-        zPos = radius*Mathf.Sin(theta);//*size;
-        dx = xPos-transform.localPosition.x;
-        dz = zPos-transform.localPosition.z;
+        //Calculates the radius as a mathematical function of theta.
+        radius = PatternStep(theta) * size;
+            Debug.Log("radius: " + radius);
+
+        //Convert the polar coordinates to rectangular coordinates
+        float dx = PolarToX(radius, theta) - transform.localPosition.x;
+        float dz = PolarToZ(radius, theta) - transform.localPosition.z;
+            Debug.Log("dx: " + dx);
+            Debug.Log("dz: " + dz);
+
+        //Update the bullet's position.
         transform.Translate(new Vector3(dx, 0, dz));
-        }
-        // else
-        // {
-        //     Debug.Log("error: invalid patternType");
-        // }
 
     }
-    void boundCheck()
+
+    float PatternStep(float angle)
     {
-        if (xPos > xBound || xPos < -xBound)
-        {
-            dx *= -1;
-        }
-        if (zPos > zBound || zPos < -zBound)
-        {
-            dz *= -1;
-        }
+        float rad = Mathf.Sin(2*angle);
+        return rad;
+    }
+    
+    float PolarToX(float rad, float angle){
+        float x = rad * Mathf.Cos(angle);
+        return x;
+    }
+    
+    float PolarToZ(float rad, float angle){
+        float z = rad * Mathf.Sin(angle);
+        return z;
+    }
+
+    float ApproximateDeltaTheta(float distance, float angle)
+    {
+        //NOTE FOR LATER: add in the Newton's Method approx. of deltaTheta here.
+        return angle;
     }
 }

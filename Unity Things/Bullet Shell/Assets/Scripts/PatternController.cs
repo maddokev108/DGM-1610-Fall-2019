@@ -5,56 +5,66 @@ using UnityEngine;
 /* 
     NOTE TO SELF: WHAT THIS SCRIPT DOES
 
-    1. Sets up the pattern data on spawn (in Start() function)
-        a. Chooses patternType (1 for rectangular or 2 for polar)
-        b. Chooses graphIndex (a value to be used for retrieving the equation from a set of them)
-        c. Chooses travelSpeed (how fast the pattern overall moves)
-        d. Chooses bulletSpeed (how fast the bullets move within the pattern)
-    2. Spawns in the bullets (in Start() function)
+    1. Spawns in the bullets (in Start() function)
         a. instantiates the bullets one at a time.
-        b. initializes their values of theta.
+    2. Moves the pattern forward.
 
  */
 
+
+
 public class PatternController : MonoBehaviour
 {
-    //declare vars
-        public int patternType; //This represents whether the pattern's equation is rectangular (1) or polar (2).
-        public int graphIndex; //This represents which graph/paths to use.
-        public float travelSpeed; //The speed at which the whole pattern moves
-        public float bulletSpeed; //The speed at which the bullets move within the pattern
-        public int totalCount;
-        public GameObject bulletPrefab;
+    //variables/properties used by the pattern
+    private float travelSpeed; //the speed at which the pattern moves across the screen
+    private int patternIndex; //the graph/shape of the pattern. 
+    public GameObject[] bulletPrefabs; //list of the different bullet prefabs. Each prefab follows a unique pattern.
+    private int totalBullets = 1; //Total number of bullets to spawn in the pattern.
+
+    //variables/properties to be passed onto the bullets
+    private float bulletSpeed; //the speed at which the bullets move along the path of their pattern.
+    private float patternSize; //the scale of the pattern
+
 
     // Start is called before the first frame update
     void Start()
     {
-        //sets up all of the variables of the pattern
-        patternType = Random.Range(1, 3);
-        graphIndex = Random.Range(0, 2);
-        travelSpeed = Random.Range(1.0f, 20.0f);
-        bulletSpeed = Random.Range(1.0f, 1.5f);
-        totalCount = Random.Range(1, 16);
+        //NOTE FOR LATER: the following two lines can be moved into the SpawnPattern script for the sake of organization.
+        patternIndex = Random.Range(0, bulletPrefabs.Length);
+        travelSpeed = 0 * Random.Range(0.5f, 10.0f);
 
-        //REMEMBER TO ADD: loop this according to totalCount, and track the number of bullets spawned with bulletCount inside the loop.
-        int bulletCount=0;
-        spawnBullet(bulletCount);
+        patternSize = 1.0f; //For a noticeable effect, set this to a multiple of 10.
+        bulletSpeed = 1.0f; 
+
+        SpawnBullets(totalBullets, bulletPrefabs[patternIndex]);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //moves the pattern forward
         transform.Translate(Vector3.forward * Time.deltaTime * travelSpeed);
     }
-    
-    void spawnBullet(int currentBullet)
+
+    //spawns a bullet inside the pattern
+    void SpawnBullets(int total, GameObject bulletType)
     {
-        GameObject newBullet = Instantiate(bulletPrefab, transform);
-        newBullet.GetComponent<BulletMovement>().patternType = patternType;
-        newBullet.GetComponent<BulletMovement>().graphIndex = graphIndex;
-        newBullet.GetComponent<BulletMovement>().speed = bulletSpeed;
-        newBullet.GetComponent<BulletMovement>().bulletID = currentBullet;
-        newBullet.GetComponent<BulletMovement>().directionModifier = ((Random.Range(1, 3) - 1) * 2) - 1;
+        int bulletCount = 0;
+        
+        //NOTE: begin loop here (bulletCount <= total)
+
+            //spawns a bullet of the specified type
+            GameObject newBullet = Instantiate(bulletType, transform);
+            bulletCount++;
+
+            //sets up the bullet's properties
+            BulletMovement bulletMovementScript = newBullet.GetComponent<BulletMovement>();
+            bulletMovementScript.size = patternSize * 10.0f; //for now, just a constant. Later, I might add in some variance between instances of patterns.
+            bulletMovementScript.speed = bulletSpeed * 2.0f / patternSize; //for now, just a constant inversely related to size. Later, I might add in some variance between instances of patterns.
+            bulletMovementScript.bulletID = bulletCount;
+
+        //NOTE: end loop here
+
     }
+    
+    
 }

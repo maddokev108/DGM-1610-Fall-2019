@@ -31,14 +31,15 @@ public class SpawnPatterns : MonoBehaviour
         float zPos = ( zBound * Random.Range(1.0f, 1.5f) + 7) * rand;
 
         //Chooses an angle facing the play area. 
-        rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-30.0f, 30.0f); 
+        rot = Mathf.Atan2(zPos, -1*xPos) + (Mathf.PI/2) + Random.Range(-30.0f, 30.0f); 
 
         //Instantiates the pattern, then rotates it to face the play area.
         GameObject newPattern = Instantiate(patternPrefab);
-        newPattern.GetComponent<Transform>().position = new Vector3(xPos,0.8f,zPos);
+        newPattern.GetComponent<Transform>().position = new Vector3( 0 * xPos,0.8f, 0 * zPos);
         newPattern.GetComponent<Transform>().Rotate(0, rot, 0);
         
-        Invoke("SpawnPattern", Random.Range(0.1f, 0.5f));
+
+        //Invoke("SpawnPattern", Random.Range(0.1f, 0.5f)); //NOTE FOR LATER: put this line inside a conditional to check that the game is still running
     }
 
 }
