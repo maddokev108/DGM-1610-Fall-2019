@@ -9,21 +9,23 @@ public class PlayerController : MonoBehaviour
     public bool grounded = true;
     public float gravityModifier = 2;
     public bool gameOver = false;
-    
+    private Animator playerAnim; 
 
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
         Physics.gravity = Physics.gravity * gravityModifier;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded && !gameOver)
         {
-            playerRb.AddForce(Vector3.up * 12.5f, ForceMode.Impulse);
+            playerAnim.SetTrigger("Jump_trig");
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             grounded = false;
         }
     }
@@ -33,8 +35,10 @@ public class PlayerController : MonoBehaviour
             grounded = true;
         } else if (collision.gameObject.CompareTag("Obstacle"))
         {
-            gameOver = true;
             Debug.Log("Game Over!");
+            gameOver = true;
+            playerAnim.SetBool("Death_b", true);
+            playerAnim.SetInteger("DeathType_int", 1);
         }
     }
 }

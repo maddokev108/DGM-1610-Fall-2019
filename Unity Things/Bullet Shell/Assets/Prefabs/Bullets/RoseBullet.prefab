@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 5272912403497117129}
   - component: {fileID: 487278085607050551}
   - component: {fileID: 6764471846890796733}
-  - component: {fileID: 993277216720272165}
+  - component: {fileID: 6530365480309822528}
   m_Layer: 0
-  m_Name: NewBullet
-  m_TagString: Untagged
+  m_Name: 4PtRose
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &993277216720272165
+--- !u!114 &6530365480309822528
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,6 +101,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6209823051141164709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8c5fc27dfb0ccd4f8dc5ada33c7494a, type: 3}
+  m_Script: {fileID: 11500000, guid: 154aa18d07219374db6e33504ea3b26b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

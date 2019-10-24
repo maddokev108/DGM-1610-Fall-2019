@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 777953147790491942}
-  - component: {fileID: 682764598560481722}
+  - component: {fileID: 8316593217176615082}
   m_Layer: 0
-  m_Name: NewPattern
+  m_Name: Pattern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &682764598560481722
+--- !u!114 &8316593217176615082
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5732209165530384637}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09bfaeea71b6f6e4c9f676ee8c2f6793, type: 3}
+  m_Script: {fileID: 11500000, guid: 84f9629cf9eefc442b7e1ad1c09eda17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefabs:

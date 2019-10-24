@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float speed = 20f;
     private float horizontalInput;
     private float forwardInput;
-    internal bool hidden = false;
+    public bool hidden = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +30,10 @@ public class PlayerControl : MonoBehaviour
         {
             speed = 0;
             hidden = true;
+        } else if (Input.GetAxisRaw("Hide") == 0)
+        {
+            speed = 20f;
+            hidden = false;
         }
     }
 }

@@ -17,14 +17,23 @@ public class CollisionDetection : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other){
-        if (gameObject.GetComponent<PlayerControl>().hidden)
+        if (other.gameObject.CompareTag("Bullet"))
         {
+
+            if (gameObject.GetComponent<PlayerController>().hidden)
+            {
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                Debug.Log("Hit");
+                //Destroy(gameObject);
+            }
+        } else if ( other.gameObject.CompareTag("Pickup") )
+        {
+            Debug.Log("Pickup collected");
             Destroy(other.gameObject);
         }
-        else
-        {
-            Debug.Log("Hit");
-            //Destroy(gameObject);
-        }
+
     }
 }

@@ -17,7 +17,7 @@ public class SpawnPickups : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("SpawnPickup", Random.Range(5.0f, 10.0f));
+        Invoke("SpawnPickup", Random.Range(.50f, 1.00f));
     }
 
     void SpawnPickup()

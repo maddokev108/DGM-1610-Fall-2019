@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 505793691150598569}
   - component: {fileID: 5254290762608732503}
   - component: {fileID: 1425932459791766237}
-  - component: {fileID: 8362977999571233193}
+  - component: {fileID: 4432164034005910409}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: OldBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,40 +87,36 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730627331520006853}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8362977999571233193
+--- !u!114 &4432164034005910409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730627331520006853}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c6f6a8a29925a941aba6897732c4898, type: 3}
+  m_Script: {fileID: 11500000, guid: 57e5a8cf21db4cf4a88150597ffdd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   patternType: 0
   graphIndex: 0
-  graphRectList:
-  - '"zig-zag"'
-  - '"empty for now"'
-  graphPolList:
-  - '"petalSin4"'
-  - '"needs a name"'
+  graphRectList: []
+  graphPolList: []
   directionModifier: 0
   speed: 0
   bulletID: 0
-  epsilon: 0.1
+  epsilon: 10
   radius: 0
   dr: 0
   theta: 0
   dth: 0
-  size: 6
+  size: 1
   xPos: 0
   dx: 0
   zPos: 0
