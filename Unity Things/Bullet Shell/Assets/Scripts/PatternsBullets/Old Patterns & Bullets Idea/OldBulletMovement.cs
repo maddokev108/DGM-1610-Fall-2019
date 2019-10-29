@@ -32,27 +32,32 @@ using UnityEngine;
 
 public class OldBulletMovement : MonoBehaviour
 {
-    //properties controlling the bullet's behaviour
+    //Pattern storage
     public int patternType;
     public int graphIndex;
     public string[] graphRectList;
     public string[] graphPolList;
-    public int directionModifier;
-    public float speed;
+
+    //pattern info
+    private float xBound = 3; //arbitrary values for now.
+    private float zBound = 7; //arbitrary values for now.
+    public int rowCount;
+    public int bulletsPerRow;
+
+    //properties controlling the bullet's behaviour
+    internal int directionModifier=1;
+    internal float speed;
     public float bulletID; //mostly just used for determining the initial x/z position and/or the initial value of theta. 
 
-    public float epsilon = 10.0f; //a very small float.
+    private float epsilon = 0.10f; //small float used for incrementing.
 
-    //pattern boundaries
-    private float xBound = 3;
-    private float zBound = 7;    
 
     //polar variable set
     public float radius;
     public float dr; //delta radius
-    public float theta = 0; //for now, just starts at 0. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
+    public float theta;
     public float dth; //delta theta
-    public float size = 1; //used for scaling the graph.
+    public float size; //used for scaling the graph.
 
     //rectangular variable set
     public float xPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
@@ -61,10 +66,18 @@ public class OldBulletMovement : MonoBehaviour
     public float dz; //delta z
 
 
+    // void Awake()
+    // {
+    //     OldPatternController patternControllerScript = transform.parent.GetComponent<OldPatternController>();
+    //     patternType = patternControllerScript.patternType;
+
+    // }
+
 
     // Start is called before the first frame update
     void Start()
     {
+
 
     }
 
@@ -73,7 +86,6 @@ public class OldBulletMovement : MonoBehaviour
     {
         if (patternType == 1)
         {
-            /*temp disable.
             switch(graphIndex)
             {
                 case 0:
@@ -83,7 +95,7 @@ public class OldBulletMovement : MonoBehaviour
                     zPos = zPos + (dz * speed * directionModifier * Time.deltaTime);
                     break;
                 case 1:
-                    goto case 1;
+                    goto case 0;
                 default:
                     Debug.Log("error: no case specified for graph type " + graphRectList[graphIndex]);
                     break;
@@ -92,31 +104,30 @@ public class OldBulletMovement : MonoBehaviour
             dz = zPos-transform.position.z;
             transform.Translate(new Vector3(dx, 0, dz));
             boundCheck();
-            */
-            patternType = 2;
         }
         else if (patternType == 2)
         {
             switch(graphIndex)
             {
                 case 0:
-                    dth = epsilon * speed;
-                    theta += dth * directionModifier; // * Time.deltaTime;
-                    radius = Mathf.Sin(2*theta);
+                    dth = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    theta += dth; //* directionModifier;
+                    radius = Mathf.Sin(2*theta) * size;
                     break;
 
                 case 1:
-                    dth = epsilon * speed;
-                    theta += dth * directionModifier; // * Time.deltaTime;
-                    radius = Mathf.Cos((3/5)*theta);
-                    break;
-                    
+                    // dth = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    // theta += dth; //* directionModifier;
+                    // radius = Mathf.Cos((3/5)*theta) * size;
+                    // break;
+                    goto case 0;
+
                 default:
                     Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
                     break;
             }
-        xPos = radius*Mathf.Cos(theta);//*size;
-        zPos = radius*Mathf.Sin(theta);//*size;
+        xPos = radius*Mathf.Cos(theta);
+        zPos = radius*Mathf.Sin(theta);
         dx = xPos-transform.localPosition.x;
         dz = zPos-transform.localPosition.z;
         transform.Translate(new Vector3(dx, 0, dz));

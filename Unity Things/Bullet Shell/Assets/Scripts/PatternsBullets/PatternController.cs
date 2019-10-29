@@ -16,10 +16,11 @@ using UnityEngine;
 public class PatternController : MonoBehaviour
 {
     //variables/properties used by the pattern
-    private float travelSpeed; //the speed at which the pattern moves across the screen
     private int patternIndex; //the graph/shape of the pattern. 
     public GameObject[] bulletPrefabs; //list of the different bullet prefabs. Each prefab follows a unique pattern.
-    private int totalBullets = 30; //Total number of bullets to spawn in the pattern.
+
+    private int totalBullets = 4; //Total number of bullets to spawn in the pattern.
+    private float travelSpeed; //the speed at which the pattern moves across the screen
 
     //variables/properties to be passed onto the bullets
     private float bulletSpeed; //the speed at which the bullets move along the path of their pattern.
@@ -33,8 +34,8 @@ public class PatternController : MonoBehaviour
         patternIndex = Random.Range(0, bulletPrefabs.Length);
         travelSpeed = Random.Range(0.5f, 10.0f);
 
-        patternSize = 1.0f; //For a noticeable effect, set this to a multiple of 10.
-        bulletSpeed = .10f; 
+        patternSize = 1.0f;
+        bulletSpeed = 1.0f; 
 
         SpawnBullets(totalBullets, bulletPrefabs[patternIndex]);
     }

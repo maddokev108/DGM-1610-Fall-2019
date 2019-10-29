@@ -38,7 +38,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7003942589015751409}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1ed07e491bae714b87957b3d3e004be, type: 3}
   m_Name: 
@@ -47,5 +47,5 @@ MonoBehaviour:
   graphIndex: 0
   travelSpeed: 0
   bulletSpeed: 0
-  totalCount: 0
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 1730627331520006853, guid: 7201b467aabb160489b5c319b032303c,
+    type: 3}

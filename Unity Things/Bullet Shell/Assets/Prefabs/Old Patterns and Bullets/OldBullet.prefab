@@ -99,19 +99,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730627331520006853}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57e5a8cf21db4cf4a88150597ffdd67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patternType: 0
-  graphIndex: 0
-  graphRectList: []
-  graphPolList: []
-  directionModifier: 0
-  speed: 0
-  bulletID: 0
-  epsilon: 10
+  graphRectList:
+  - 
+  - 
+  graphPolList:
+  - '"sinRose4"'
+  - '"cosThing"'
   radius: 0
   dr: 0
   theta: 0

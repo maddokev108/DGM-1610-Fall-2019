@@ -16,24 +16,26 @@ public class CollisionDetection : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider other){
+    void OnTriggerEnter(Collider other)
+    {
         if (other.gameObject.CompareTag("Bullet"))
         {
+            Destroy(other.gameObject); //destroy the bullet no mater what
 
             if (gameObject.GetComponent<PlayerController>().hidden)
             {
-                Destroy(other.gameObject);
+                //not sure if I want to put anything in here, so just leaving it open for now
             }
             else
             {
                 Debug.Log("Hit");
-                //Destroy(gameObject);
+                // Destroy(gameObject); //Destroy the player.
             }
+
         } else if ( other.gameObject.CompareTag("Pickup") )
         {
             Debug.Log("Pickup collected");
             Destroy(other.gameObject);
         }
-
     }
 }

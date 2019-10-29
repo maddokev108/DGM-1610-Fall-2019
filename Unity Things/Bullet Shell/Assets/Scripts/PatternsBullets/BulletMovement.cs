@@ -16,28 +16,32 @@ public class BulletMovement : MonoBehaviour
     private float theta;
     private float deltaTheta;
     private float radius;
-    private float customEpsilon = .1f; //A very small float. Used for incrementing.
+    private float customEpsilon = 0.1f; //A very small float. Used for incrementing.
     
     //internal, so that the SpawnBullets method in PatternController can access these.
     internal int bulletID; //based on the spawn order of the bullets in the pattern.
     internal float size; //scale of the pattern
     internal float speed; //speed multiplier for the bullet's movement.
-    internal float petals = 10; //number of "petals" seen on the graph.
+
+    //variables unique to the Rose graph type
+    internal float petals = 4; //number of "petals" seen on the graph.
     internal float graphPeriod; //The value of theta at which point the function starts to trace over itself.
+    internal float rows = 1;
 
 
     // Start is called before the first frame update
     void Start()
     {
         //Initialize variables
-        graphPeriod = 2 * Mathf.PI / petals;
-        if ( petals/2 == Mathf.Ceil(petals/2)){
-            theta = bulletID * graphPeriod * 2; //NOTE FOR LATER: initialize theta based on the bulletID, such that the bullets are evenly distributed across the pattern.
-        } else
-        {
-            theta = bulletID * graphPeriod;
+        if ( petals/2 == Mathf.Ceil(petals/2)) //checks if even or odd number of petals
+        { //if even...
+            graphPeriod = 2.0f * Mathf.PI; //the graph's period is 2*pi
         }
-
+        else
+        { //if odd...
+            graphPeriod = Mathf.PI; // the graph's period is pi.
+        }
+        theta = bulletID * graphPeriod / petals / rows; //initial value of theta
         transform.position = (new Vector3(0, 0, 0));
     }
 
@@ -62,16 +66,18 @@ public class BulletMovement : MonoBehaviour
 
     float PatternStep(float angle)
     {
-        float rad = Mathf.Sin(petals * angle);
+        float rad = Mathf.Sin(petals/(graphPeriod/Mathf.PI) * angle); //dividing by (graphPeriod/Mathf.PI) makes the graph have the right number of petals.
         return rad;
     }
     
-    float PolarToX(float rad, float angle){
+    float PolarToX(float rad, float angle)
+    {
         float x = rad * Mathf.Cos(angle);
         return x;
     }
     
-    float PolarToZ(float rad, float angle){
+    float PolarToZ(float rad, float angle)
+    {
         float z = rad * Mathf.Sin(angle);
         return z;
     }
