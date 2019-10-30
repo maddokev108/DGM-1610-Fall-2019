@@ -39,8 +39,8 @@ public class OldPatternController : MonoBehaviour
     {
         //sets up all of the variables of the pattern
         patternType = 2;//Random.Range(1, 3);
-        graphIndex = 0;//Random.Range(0, 2);
-        travelSpeed = 0;//Random.Range(1.0f, 20.0f);
+        graphIndex = Random.Range(0, 2);
+        travelSpeed = 5.0f;//Random.Range(1.0f, 20.0f);
         bulletSpeed = 1.0f;//Random.Range(1.0f, 1.5f);
         patternSize = 1.0f;
         // bulletsPerRow = Random.Range(1, 16);
@@ -63,13 +63,15 @@ public class OldPatternController : MonoBehaviour
         {
             switch (graphIndex)
             {
-                case 0:
+                case 0: //Rose
                     bulletsPerRow = 4; //set up how many bullets belong in each row.
                     rowCount = 2; //set up how many rows belong in the pattern.
                     startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
                     break;
-                case 1:
-                    //empty for now
+                case 1: //Cross
+                    bulletsPerRow = 5; //set up how many bullets belong in each row.
+                    rowCount = 2; //set up how many rows belong in the pattern.
+                    startThetaModifier = 5.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
                     break;
                 default:
                     Debug.Log("error");
@@ -82,9 +84,9 @@ public class OldPatternController : MonoBehaviour
         int bulletCount = 0;
         while ( (bulletCount < bulletsPerRow*rowCount && bulletCount < 30))
         {
-                bulletCount++;
-                spawnBullet(bulletCount);
-                nextSpawnReady = false;
+            bulletCount++;
+            spawnBullet(bulletCount);
+            nextSpawnReady = false;
         }
     }
 

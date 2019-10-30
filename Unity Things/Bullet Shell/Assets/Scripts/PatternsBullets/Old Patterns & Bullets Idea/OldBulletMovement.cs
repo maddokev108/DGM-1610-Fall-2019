@@ -116,11 +116,11 @@ public class OldBulletMovement : MonoBehaviour
                     break;
 
                 case 1:
-                    // dth = epsilon * speed * Time.deltaTime * Mathf.PI;
-                    // theta += dth; //* directionModifier;
-                    // radius = Mathf.Cos((3/5)*theta) * size;
-                    // break;
-                    goto case 0;
+                    dth = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    theta += dth; //* directionModifier;
+                    radius = Mathf.Cos((3.0f/5.0f)*theta) * size;
+                    break;
+                    //goto case 0;
 
                 default:
                     Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
