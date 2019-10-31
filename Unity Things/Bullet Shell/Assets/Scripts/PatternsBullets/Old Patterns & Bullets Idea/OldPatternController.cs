@@ -28,7 +28,7 @@ public class OldPatternController : MonoBehaviour
         public int bulletsPerRow;
         public int rowCount;
 
-        public GameObject bulletPrefab;
+        public GameObject[] bulletPrefabList;
 
         public bool full = false;
         public bool nextSpawnReady = true;
@@ -39,7 +39,7 @@ public class OldPatternController : MonoBehaviour
     {
         //sets up all of the variables of the pattern
         patternType = 2;//Random.Range(1, 3);
-        graphIndex = Random.Range(0, 2);
+        graphIndex = Random.Range(0, 2); //1;//
         travelSpeed = 5.0f;//Random.Range(1.0f, 20.0f);
         bulletSpeed = 1.0f;//Random.Range(1.0f, 1.5f);
         patternSize = 1.0f;
@@ -99,12 +99,13 @@ public class OldPatternController : MonoBehaviour
     
     void spawnBullet(int currentBullet)
     {
-        GameObject newBullet = Instantiate(bulletPrefab, transform);
+        GameObject newBullet = Instantiate(bulletPrefabList[graphIndex], transform);
         OldBulletMovement bulletMovementScript = newBullet.GetComponent<OldBulletMovement>();
+        
+        bulletMovementScript.bulletID = currentBullet;
 
         bulletMovementScript.patternType = patternType;
         bulletMovementScript.graphIndex = graphIndex;
-        bulletMovementScript.bulletID = currentBullet;
         bulletMovementScript.directionModifier = ((Random.Range(1, 3) - 1) * 2) - 1;
         bulletMovementScript.size = patternSize * 10.0f;
         bulletMovementScript.speed = bulletSpeed * 2 / patternSize;

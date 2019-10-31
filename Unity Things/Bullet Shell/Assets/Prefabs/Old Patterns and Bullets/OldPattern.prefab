@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7003942589015751408}
   - component: {fileID: 4083620723900924414}
+  - component: {fileID: 309486827}
   m_Layer: 0
   m_Name: OldPattern
   m_TagString: Untagged
@@ -47,5 +48,24 @@ MonoBehaviour:
   graphIndex: 0
   travelSpeed: 0
   bulletSpeed: 0
-  bulletPrefab: {fileID: 1730627331520006853, guid: 7201b467aabb160489b5c319b032303c,
-    type: 3}
+  patternSize: 0
+  bulletsPerRow: 0
+  rowCount: 0
+  bulletPrefabList:
+  - {fileID: 8041510005884216908, guid: c470ede9316a96a4a893f3a422a78b03, type: 3}
+  - {fileID: 1585811801530122423, guid: f9850058a08f2fa4a878322b9f34555f, type: 3}
+  full: 0
+  nextSpawnReady: 1
+  startThetaModifier: 0
+--- !u!114 &309486827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7003942589015751409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05bc73fe329f6e0439bc888dddbdb520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

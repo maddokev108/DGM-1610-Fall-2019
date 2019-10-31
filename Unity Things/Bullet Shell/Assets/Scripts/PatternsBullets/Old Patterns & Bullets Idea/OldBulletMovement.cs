@@ -66,14 +66,6 @@ public class OldBulletMovement : MonoBehaviour
     public float dz; //delta z
 
 
-    // void Awake()
-    // {
-    //     OldPatternController patternControllerScript = transform.parent.GetComponent<OldPatternController>();
-    //     patternType = patternControllerScript.patternType;
-
-    // }
-
-
     // Start is called before the first frame update
     void Start()
     {

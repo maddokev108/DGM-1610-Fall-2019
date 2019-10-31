@@ -39,7 +39,7 @@ public class switchTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        Debug.Log("output is " + AssigningToSwitchTest(1));
     }
 
     // Update is called once per frame
@@ -78,4 +78,23 @@ public class switchTest : MonoBehaviour
         }
     }
 
+
+    int AssigningToSwitchTest( int choice ) //Note To Self: This function was meant to test if you could return values from inside switch statements. After testing it a bit, it seems you cannot. Instead, you just have to store the desired value in some variable, then return the value from outside the switch statement.
+    {
+        int output;
+        switch(choice)
+        {
+            case 1: 
+                output = 1;
+                break;
+            case 2: 
+                output = 2;
+                break;
+            default:
+                output = 0;
+                break;
+        }
+        return output;
+    }
 }
+
