@@ -54,8 +54,7 @@ MonoBehaviour:
   bulletPrefabList:
   - {fileID: 8041510005884216908, guid: c470ede9316a96a4a893f3a422a78b03, type: 3}
   - {fileID: 1585811801530122423, guid: f9850058a08f2fa4a878322b9f34555f, type: 3}
-  full: 0
-  nextSpawnReady: 1
+  - {fileID: 8041510005884216908, guid: c470ede9316a96a4a893f3a422a78b03, type: 3}
   startThetaModifier: 0
 --- !u!114 &309486827
 MonoBehaviour:

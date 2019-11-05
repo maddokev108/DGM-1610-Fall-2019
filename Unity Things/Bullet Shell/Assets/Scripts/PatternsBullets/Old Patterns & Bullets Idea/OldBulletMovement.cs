@@ -54,16 +54,16 @@ public class OldBulletMovement : MonoBehaviour
 
     //polar variable set
     public float radius;
-    public float dr; //delta radius
+    public float deltaRadius; //delta radius
     public float theta;
-    public float dth; //delta theta
+    public float deltaTheta; //delta theta
     public float size; //used for scaling the graph.
 
     //rectangular variable set
     public float xPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
-    public float dx; //delta x
+    public float deltaX; //delta x
     public float zPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
-    public float dz; //delta z
+    public float deltaZ; //delta z
 
 
     // Start is called before the first frame update
@@ -81,10 +81,10 @@ public class OldBulletMovement : MonoBehaviour
             switch(graphIndex)
             {
                 case 0:
-                    dx = epsilon;
-                    dz = epsilon;
-                    xPos = xPos + (dx * speed * directionModifier * Time.deltaTime);
-                    zPos = zPos + (dz * speed * directionModifier * Time.deltaTime);
+                    deltaX = epsilon;
+                    deltaZ = epsilon;
+                    xPos = xPos + (deltaX * speed * directionModifier * Time.deltaTime);
+                    zPos = zPos + (deltaZ * speed * directionModifier * Time.deltaTime);
                     break;
                 case 1:
                     goto case 0;
@@ -92,27 +92,33 @@ public class OldBulletMovement : MonoBehaviour
                     Debug.Log("error: no case specified for graph type " + graphRectList[graphIndex]);
                     break;
             }
-            dx = xPos-transform.position.x;
-            dz = zPos-transform.position.z;
-            transform.Translate(new Vector3(dx, 0, dz));
+            deltaX = xPos-transform.position.x;
+            deltaZ = zPos-transform.position.z;
+            transform.Translate(new Vector3(deltaX, 0, deltaZ));
             boundCheck();
         }
         else if (patternType == 2)
         {
             switch(graphIndex)
             {
-                case 0:
-                    dth = epsilon * speed * Time.deltaTime * Mathf.PI;
-                    theta += dth; //* directionModifier;
+                case 0: //SinRose4
+                    deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    theta += deltaTheta; //* directionModifier;
                     radius = Mathf.Sin(2*theta) * size;
                     break;
 
-                case 1:
-                    dth = epsilon * speed * Time.deltaTime * Mathf.PI;
-                    theta += dth; //* directionModifier;
+                case 1: //Cos Cross
+                    deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    theta += deltaTheta; //* directionModifier;
                     radius = Mathf.Cos((3.0f/5.0f)*theta) * size;
                     break;
                     //goto case 0;
+
+                case 2: //SinRose10
+                    deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    theta += deltaTheta; //* directionModifier;
+                    radius = Mathf.Abs(Mathf.Sin(4*theta)) * size;
+                    break;
 
                 default:
                     Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
@@ -120,9 +126,9 @@ public class OldBulletMovement : MonoBehaviour
             }
         xPos = radius*Mathf.Cos(theta);
         zPos = radius*Mathf.Sin(theta);
-        dx = xPos-transform.localPosition.x;
-        dz = zPos-transform.localPosition.z;
-        transform.Translate(new Vector3(dx, 0, dz));
+        deltaX = xPos-transform.localPosition.x;
+        deltaZ = zPos-transform.localPosition.z;
+        transform.Translate(new Vector3(deltaX, 0, deltaZ));
         }
         // else
         // {
@@ -134,11 +140,11 @@ public class OldBulletMovement : MonoBehaviour
     {
         if (xPos > xBound || xPos < -xBound)
         {
-            dx *= -1;
+            deltaX *= -1;
         }
         if (zPos > zBound || zPos < -zBound)
         {
-            dz *= -1;
+            deltaZ *= -1;
         }
     }
 }

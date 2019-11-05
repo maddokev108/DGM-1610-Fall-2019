@@ -30,20 +30,16 @@ public class OldPatternController : MonoBehaviour
 
         public GameObject[] bulletPrefabList;
 
-        public bool full = false;
-        public bool nextSpawnReady = true;
-        public float startThetaModifier; //this is the starting value of theta, but without any bulletID facotred in. It will act as a sort of formula for initializing the values of theta in each bullet as they spawn.
+        public float startThetaModifier; //this is the starting value of theta, but without any bulletID factored in. It will act as a sort of formula for initializing the values of theta in each bullet as they spawn.
 
     // Start is called before the first frame update
     void Start()
     {
         //sets up all of the variables of the pattern
         patternType = 2;//Random.Range(1, 3);
-        graphIndex = Random.Range(0, 2); //1;//
+        graphIndex = Random.Range(1, 3); //1;//
         travelSpeed = 5.0f;//Random.Range(1.0f, 20.0f);
-        bulletSpeed = 1.0f;//Random.Range(1.0f, 1.5f);
-        patternSize = 1.0f;
-        // bulletsPerRow = Random.Range(1, 16);
+        patternSize = 10f;
 
 
         if (patternType == 1)
@@ -56,6 +52,7 @@ public class OldPatternController : MonoBehaviour
                 case 1:
                     //empty for now
                     break;
+                
             }
             //empty for now
         }
@@ -63,15 +60,23 @@ public class OldPatternController : MonoBehaviour
         {
             switch (graphIndex)
             {
-                case 0: //Rose
+                case 0: //Rose4
                     bulletsPerRow = 4; //set up how many bullets belong in each row.
                     rowCount = 2; //set up how many rows belong in the pattern.
                     startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
+                    bulletSpeed = 2.0f;
                     break;
                 case 1: //Cross
                     bulletsPerRow = 5; //set up how many bullets belong in each row.
                     rowCount = 2; //set up how many rows belong in the pattern.
                     startThetaModifier = 5.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
+                    bulletSpeed = 2.0f;
+                    break;
+                case 2: //Rose10
+                    bulletsPerRow = 8; //set up how many bullets belong in each row.
+                    rowCount = 2; //set up how many rows belong in the pattern.
+                    startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
+                    bulletSpeed = 0.5f;
                     break;
                 default:
                     Debug.Log("error");
@@ -80,13 +85,12 @@ public class OldPatternController : MonoBehaviour
         }
 
 
-        //REMEMBER TO ADD: loop this according to totalCount, and track the number of bullets spawned with bulletCount inside the loop.
+        //Spawns bullets into the pattern. 
         int bulletCount = 0;
-        while ( (bulletCount < bulletsPerRow*rowCount && bulletCount < 30))
+        while ( (bulletCount < bulletsPerRow*rowCount && bulletCount < 100))
         {
             bulletCount++;
             spawnBullet(bulletCount);
-            nextSpawnReady = false;
         }
     }
 
@@ -107,17 +111,13 @@ public class OldPatternController : MonoBehaviour
         bulletMovementScript.patternType = patternType;
         bulletMovementScript.graphIndex = graphIndex;
         bulletMovementScript.directionModifier = ((Random.Range(1, 3) - 1) * 2) - 1;
-        bulletMovementScript.size = patternSize * 10.0f;
-        bulletMovementScript.speed = bulletSpeed * 2 / patternSize;
+        bulletMovementScript.size = patternSize;
+        bulletMovementScript.speed = bulletSpeed*10 / patternSize;
         bulletMovementScript.bulletsPerRow = bulletsPerRow;
         bulletMovementScript.rowCount = rowCount;
         bulletMovementScript.theta = startThetaModifier * currentBullet;
 
 
-        // currentBullet++;
-        // if (!full)
-        // {
-        //     spawnBullet(currentBullet);
-        // }
+
     }
 }

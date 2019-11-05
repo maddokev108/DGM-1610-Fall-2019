@@ -31,7 +31,7 @@ public class SpawnPatterns : MonoBehaviour
         float zPos = ( zBound * Random.Range(1.0f, 1.5f) + 7) * rand;
 
         //Chooses an angle facing the play area. 
-        rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-30.0f, 30.0f); 
+        rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-20.0f, 20.0f); 
 
         //Instantiates the pattern, then rotates it to face the play area.
         GameObject newPattern = Instantiate(patternPrefab);
