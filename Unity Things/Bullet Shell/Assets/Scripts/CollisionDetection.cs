@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
+    internal bool gameOver = false;
+    internal int lives = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,13 +31,21 @@ public class CollisionDetection : MonoBehaviour
             }
             else
             {
-                Debug.Log("Hit");
-                // Destroy(gameObject); //Destroy the player.
+                lives--;
+                Debug.Log("Hit. Lives remaining: " + lives);
+                if (lives <= 0)
+                {
+                    // Destroy(gameObject); //Destroy the player.
+                    Debug.Log("Game Over");
+                    gameOver = true;
+                }
+
             }
 
         } else if ( other.gameObject.CompareTag("Pickup") )
         {
-            Debug.Log("Pickup collected");
+            lives++;
+            Debug.Log("Pickup collected. Effect: 1-UP. Lives Remaining: " + lives);
             Destroy(other.gameObject);
         }
     }

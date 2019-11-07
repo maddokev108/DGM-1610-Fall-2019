@@ -15,9 +15,13 @@ public class DestroyOverTime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( Time.time >= lifespan + born )
+        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
+        if (!gameOver) //checks to see if the game is still running.
         {
-            Destroy(gameObject);
+            if ( Time.time >= lifespan + born )
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

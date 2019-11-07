@@ -97,8 +97,12 @@ public class OldPatternController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //moves the pattern forward
-        transform.Translate(Vector3.forward * Time.deltaTime * travelSpeed);
+        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
+        if (!gameOver) //checks to see if the game is still running.
+        {
+            //moves the pattern forward
+            transform.Translate(Vector3.forward * Time.deltaTime * travelSpeed);
+        }
     }
     
     void spawnBullet(int currentBullet)

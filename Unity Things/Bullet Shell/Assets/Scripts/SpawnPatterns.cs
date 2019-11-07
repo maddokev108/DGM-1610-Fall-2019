@@ -24,22 +24,25 @@ public class SpawnPatterns : MonoBehaviour
     //Spawn a bullet pattern
     void SpawnPattern()
     {
-        //Chooses random off-screen position
-        int rand = (( Random.Range(1, 3) - 1 ) * 2) - 1; //Steps: |1. RNG| 1 or 2. |2. N-1| 0 or 1. |3. N*2| 0 or 2. |4. N-1| -1 or 1.
-        float xPos = ( xBound * Random.Range(1.0f, 1.25f) + 7) * rand;
-        rand = (( Random.Range(1, 3) - 1 ) * 2) - 1;
-        float zPos = ( zBound * Random.Range(1.0f, 1.5f) + 7) * rand;
+        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
+        if (!gameOver) //checks to see if the game is still running.
+        {
+            //Chooses random off-screen position
+            int rand = (( Random.Range(1, 3) - 1 ) * 2) - 1; //Steps: |1. RNG| 1 or 2. |2. N-1| 0 or 1. |3. N*2| 0 or 2. |4. N-1| -1 or 1.
+            float xPos = ( xBound * Random.Range(1.0f, 1.25f) + 7) * rand;
+            rand = (( Random.Range(1, 3) - 1 ) * 2) - 1;
+            float zPos = ( zBound * Random.Range(1.0f, 1.5f) + 7) * rand;
 
-        //Chooses an angle facing the play area. 
-        rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-20.0f, 20.0f); 
+            //Chooses an angle facing the play area. 
+            rot = Mathf.Atan2(zPos, -1*xPos) * 180 / Mathf.PI + 90 + Random.Range(-20.0f, 20.0f); 
 
-        //Instantiates the pattern, then rotates it to face the play area.
-        GameObject newPattern = Instantiate(patternPrefab);
-        newPattern.GetComponent<Transform>().position = new Vector3(xPos, 0.8f, zPos);
-        newPattern.GetComponent<Transform>().Rotate(0, rot, 0);
-        
+            //Instantiates the pattern, then rotates it to face the play area.
+            GameObject newPattern = Instantiate(patternPrefab);
+            newPattern.GetComponent<Transform>().position = new Vector3(xPos, 0.8f, zPos);
+            newPattern.GetComponent<Transform>().Rotate(0, rot, 0);
 
-        Invoke("SpawnPattern", Random.Range(1.0f, 5.0f)); //NOTE FOR LATER: put this line inside a conditional to check that the game is still running
+            Invoke("SpawnPattern", Random.Range(1.0f, 5.0f)); //NOTE FOR LATER: put this line inside a conditional to check that the game is still running
+        }
     }
 
 }

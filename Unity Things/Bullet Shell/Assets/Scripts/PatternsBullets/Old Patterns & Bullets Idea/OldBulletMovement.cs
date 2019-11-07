@@ -76,65 +76,68 @@ public class OldBulletMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (patternType == 1)
+        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
+        if (!gameOver) //checks to see if the game is still running.
         {
-            switch(graphIndex)
+            if (patternType == 1)
             {
-                case 0:
-                    deltaX = epsilon;
-                    deltaZ = epsilon;
-                    xPos = xPos + (deltaX * speed * directionModifier * Time.deltaTime);
-                    zPos = zPos + (deltaZ * speed * directionModifier * Time.deltaTime);
-                    break;
-                case 1:
-                    goto case 0;
-                default:
-                    Debug.Log("error: no case specified for graph type " + graphRectList[graphIndex]);
-                    break;
+                switch(graphIndex)
+                {
+                    case 0:
+                        deltaX = epsilon;
+                        deltaZ = epsilon;
+                        xPos = xPos + (deltaX * speed * directionModifier * Time.deltaTime);
+                        zPos = zPos + (deltaZ * speed * directionModifier * Time.deltaTime);
+                        break;
+                    case 1:
+                        goto case 0;
+                    default:
+                        Debug.Log("error: no case specified for graph type " + graphRectList[graphIndex]);
+                        break;
+                }
+                deltaX = xPos-transform.position.x;
+                deltaZ = zPos-transform.position.z;
+                transform.Translate(new Vector3(deltaX, 0, deltaZ));
+                boundCheck();
             }
-            deltaX = xPos-transform.position.x;
-            deltaZ = zPos-transform.position.z;
+            else if (patternType == 2)
+            {
+                switch(graphIndex)
+                {
+                    case 0: //SinRose4
+                        deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                        theta += deltaTheta; //* directionModifier;
+                        radius = Mathf.Sin(2*theta) * size;
+                        break;
+
+                    case 1: //Cos Cross
+                        deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                        theta += deltaTheta; //* directionModifier;
+                        radius = Mathf.Cos((3.0f/5.0f)*theta) * size;
+                        break;
+                        //goto case 0;
+
+                    case 2: //SinRose10
+                        deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                        theta += deltaTheta; //* directionModifier;
+                        radius = Mathf.Abs(Mathf.Sin(4*theta)) * size;
+                        break;
+
+                    default:
+                        Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
+                        break;
+                }
+            xPos = radius*Mathf.Cos(theta);
+            zPos = radius*Mathf.Sin(theta);
+            deltaX = xPos-transform.localPosition.x;
+            deltaZ = zPos-transform.localPosition.z;
             transform.Translate(new Vector3(deltaX, 0, deltaZ));
-            boundCheck();
-        }
-        else if (patternType == 2)
-        {
-            switch(graphIndex)
-            {
-                case 0: //SinRose4
-                    deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
-                    theta += deltaTheta; //* directionModifier;
-                    radius = Mathf.Sin(2*theta) * size;
-                    break;
-
-                case 1: //Cos Cross
-                    deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
-                    theta += deltaTheta; //* directionModifier;
-                    radius = Mathf.Cos((3.0f/5.0f)*theta) * size;
-                    break;
-                    //goto case 0;
-
-                case 2: //SinRose10
-                    deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
-                    theta += deltaTheta; //* directionModifier;
-                    radius = Mathf.Abs(Mathf.Sin(4*theta)) * size;
-                    break;
-
-                default:
-                    Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
-                    break;
             }
-        xPos = radius*Mathf.Cos(theta);
-        zPos = radius*Mathf.Sin(theta);
-        deltaX = xPos-transform.localPosition.x;
-        deltaZ = zPos-transform.localPosition.z;
-        transform.Translate(new Vector3(deltaX, 0, deltaZ));
+            // else
+            // {
+            //     Debug.Log("error: invalid patternType");
+            // }
         }
-        // else
-        // {
-        //     Debug.Log("error: invalid patternType");
-        // }
-
     }
     void boundCheck()
     {
