@@ -30,7 +30,7 @@ using UnityEngine;
              7. Moves the bullet to the new X/Z coordinates.
  */
 
-public class OldBulletMovement : MonoBehaviour
+public class BulletMovement : MonoBehaviour
 {
     //Pattern storage
     public int patternType;

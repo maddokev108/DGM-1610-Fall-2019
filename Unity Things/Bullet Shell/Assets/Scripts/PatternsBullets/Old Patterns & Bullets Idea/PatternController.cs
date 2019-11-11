@@ -16,7 +16,7 @@ using UnityEngine;
 
  */
 
-public class OldPatternController : MonoBehaviour
+public class PatternController : MonoBehaviour
 {
     //declare vars
         public int patternType; //This represents whether the pattern's equation is rectangular (1) or polar (2).
@@ -108,7 +108,7 @@ public class OldPatternController : MonoBehaviour
     void spawnBullet(int currentBullet)
     {
         GameObject newBullet = Instantiate(bulletPrefabList[graphIndex], transform);
-        OldBulletMovement bulletMovementScript = newBullet.GetComponent<OldBulletMovement>();
+        BulletMovement bulletMovementScript = newBullet.GetComponent<BulletMovement>();
         
         bulletMovementScript.bulletID = currentBullet;
 
