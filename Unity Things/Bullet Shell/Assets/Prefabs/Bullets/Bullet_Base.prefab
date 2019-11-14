@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1425932459791766237}
   - component: {fileID: 4432164034005910409}
   m_Layer: 0
-  m_Name: OldBullet
+  m_Name: Bullet_Base
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,11 +116,11 @@ MonoBehaviour:
   bulletsPerRow: 0
   bulletID: 0
   radius: 0
-  dr: 0
+  deltaRadius: 0
   theta: 0
-  dth: 0
+  deltaTheta: 0
   size: 1
   xPos: 0
-  dx: 0
+  deltaX: 0
   zPos: 0
-  dz: 0
+  deltaZ: 0

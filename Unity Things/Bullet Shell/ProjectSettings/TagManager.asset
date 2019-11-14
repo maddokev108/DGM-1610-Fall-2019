@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
-  - Pickup
+  - LifePickup
+  - SpeedPickup
+  - ScorePickup
   layers:
   - Default
   - TransparentFX

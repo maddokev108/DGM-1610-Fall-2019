@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    internal float speed = 20f;
+    internal float speed = 15.0f;
+    internal float previousSpeed; //to prevent the player's speed from resetting every time they hide.
     private float horizontalInput;
     private float forwardInput;
     internal bool hidden = false;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
         bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
         if (!gameOver) //checks to see if the game is still running.
         {
+            transform.Translate(Vector3.up * ( 0.492f - transform.position.y) );
+
             //This code controls the player's movement.
             horizontalInput = Input.GetAxis("Horizontal");
             forwardInput = Input.GetAxis("Vertical");
@@ -43,14 +46,21 @@ public class PlayerController : MonoBehaviour
                 transform.position = new Vector3(xPos, 0, zBound * Mathf.Abs(zPos) / zPos); //...bring them back on-screen (z)
             }
 
+            if( !hidden) //If the player is not hidden...
+            {
+                //...Save the player's speed
+                previousSpeed = speed;
 
-            if( !hidden && Input.GetAxisRaw("Hide") != 0 ) //When the "hide" button is pressed down...
+                if (Input.GetAxisRaw("Hide") != 0 ) //When the "hide" button is pressed down...
+                {
+                    speed = 0; //...Stop the player from moving
+                    hidden = true;
+                }
+                
+            }
+            else if (Input.GetAxisRaw("Hide") == 0) //When the "hide" button is released...
             {
-                speed = 0; //...Stop the player from moving
-                hidden = true;
-            } else if (Input.GetAxisRaw("Hide") == 0) //When the "hide" button is released...
-            {
-                speed = 20f; //...Let the player move again
+                speed = previousSpeed; //...Let the player move again
                 hidden = false;
             }
         }
