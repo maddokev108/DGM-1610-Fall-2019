@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollisionDetection : MonoBehaviour
 {
     internal bool gameOver = false;
-    internal int lives = 10;
+    internal int lives = 1000;
     private PlayerController PlayerControllerScript;
     private float playerBonusMultiplier; //just made this to save myself some typing.
     private float previousMultiplier; //used by the score pickup so that stacked multipliers won't lose their effects all at once.
@@ -30,7 +30,7 @@ public class CollisionDetection : MonoBehaviour
             {
                 float scoreIncrease = 100 * Time.deltaTime * bonusMultiplier;
                 score += Mathf.RoundToInt(scoreIncrease); 
-                Debug.Log("Score incremented by: " + scoreIncrease + ". Score is now: " + score + ". Current time (seconds): " + Time.time);
+                //Debug.Log("Score incremented by: " + scoreIncrease + ". Score is now: " + score + ". Current time (seconds): " + Time.time);
             }
         }
     }

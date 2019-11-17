@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4083620723900924414}
   - component: {fileID: 309486827}
   m_Layer: 0
-  m_Name: OldPattern
+  m_Name: Pattern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,11 +51,19 @@ MonoBehaviour:
   patternSize: 0
   bulletsPerRow: 0
   rowCount: 0
-  bulletPrefabList:
+  xBound: 0
+  zBound: 0
+  bulletPrefabRectList:
+  - {fileID: 6898094170551963611, guid: 05e2a8f97f5f30849baa97e182542623, type: 3}
+  - {fileID: 4837343429802424061, guid: 3f52b6176a82d68459c63d503daa97e8, type: 3}
+  bulletPrefabPolList:
   - {fileID: 8041510005884216908, guid: c470ede9316a96a4a893f3a422a78b03, type: 3}
   - {fileID: 1585811801530122423, guid: f9850058a08f2fa4a878322b9f34555f, type: 3}
   - {fileID: 8041510005884216908, guid: c470ede9316a96a4a893f3a422a78b03, type: 3}
+  bulletPrefab: {fileID: 0}
   startThetaModifier: 0
+  startXPosModifier: 0
+  startZPosModifier: 0
 --- !u!114 &309486827
 MonoBehaviour:
   m_ObjectHideFlags: 0

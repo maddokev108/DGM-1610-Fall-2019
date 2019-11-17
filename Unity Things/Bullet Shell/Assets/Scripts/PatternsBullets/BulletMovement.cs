@@ -39,13 +39,13 @@ public class BulletMovement : MonoBehaviour
     public string[] graphPolList;
 
     //pattern info
-    private float xBound = 3; //arbitrary values for now.
-    private float zBound = 7; //arbitrary values for now.
+    private float xBound = 5.0f; //arbitrary values for now.
+    private float zBound = 7.0f; //arbitrary values for now.
     public int rowCount;
     public int bulletsPerRow;
 
     //properties controlling the bullet's behaviour
-    internal int directionModifier=1;
+    internal int directionModifier = 1;
     internal float speed;
     public float bulletID; //mostly just used for determining the initial x/z position and/or the initial value of theta. 
 
@@ -62,14 +62,15 @@ public class BulletMovement : MonoBehaviour
     //rectangular variable set
     public float xPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
     public float deltaX; //delta x
-    public float zPos = 0; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
+    public float zPos; //starting at 0 for now. Later on I'll spawn the bullets evenly across the graph by using their bulletID values.
     public float deltaZ; //delta z
-
 
     // Start is called before the first frame update
     void Start()
     {
-
+        Vector3 PosVector = transform.localPosition;
+        xPos = PosVector.x;
+        zPos = PosVector.z;
 
     }
 
@@ -84,21 +85,24 @@ public class BulletMovement : MonoBehaviour
                 switch(graphIndex)
                 {
                     case 0:
-                        deltaX = epsilon;
-                        deltaZ = epsilon;
-                        xPos = xPos + (deltaX * speed * directionModifier * Time.deltaTime);
-                        zPos = zPos + (deltaZ * speed * directionModifier * Time.deltaTime);
+                        // deltaX = epsilon * speed * Time.deltaTime * size;
+                        // boundCheckX();
+                        // xPos += deltaX * directionModifier;
+                        // zPos = xPos * xPos * xPos / 10;
+                        // xPos = xBound / 2 - bulletID + 1;
                         break;
                     case 1:
-                        goto case 0;
+                        //empty for now
+                        deltaX = epsilon * speed * Time.deltaTime;
+                        boundCheckX();
+                        xPos += deltaX * directionModifier;
+                        zPos = -1 * Mathf.Abs(xPos);
+                        break;
                     default:
                         Debug.Log("error: no case specified for graph type " + graphRectList[graphIndex]);
                         break;
                 }
-                deltaX = xPos-transform.position.x;
-                deltaZ = zPos-transform.position.z;
-                transform.Translate(new Vector3(deltaX, 0, deltaZ));
-                boundCheck();
+                transform.localPosition = new Vector3(xPos, 0, zPos);
             }
             else if (patternType == 2)
             {
@@ -107,13 +111,13 @@ public class BulletMovement : MonoBehaviour
                     case 0: //SinRose4
                         deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
                         theta += deltaTheta; //* directionModifier;
-                        radius = Mathf.Sin(2*theta) * size;
+                        radius = Mathf.Sin(10*theta) * size;
                         break;
 
                     case 1: //Cos Cross
                         deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
                         theta += deltaTheta; //* directionModifier;
-                        radius = Mathf.Cos((3.0f/5.0f)*theta) * size;
+                        radius = Mathf.Cos((3.0f/5.0f)*theta/Mathf.PI) * size;
                         break;
                         //goto case 0;
 
@@ -139,15 +143,26 @@ public class BulletMovement : MonoBehaviour
             // }
         }
     }
-    void boundCheck()
+    void boundCheckX()
     {
-        if (xPos > xBound || xPos < -xBound)
+        if (Mathf.Abs(xPos) >= (xBound))
         {
-            deltaX *= -1;
+
+            directionModifier *= -1;
+            deltaX += .15f;
+            if (Mathf.Abs(xPos) >= (xBound + .5f) )
+            {
+                deltaX = 0;
+            }
         }
-        if (zPos > zBound || zPos < -zBound)
+
+    }
+    void boundCheckZ()
+    {
+        if (Mathf.Abs(zPos) >= zBound)
         {
-            deltaZ *= -1;
+            directionModifier *= -1;
+            deltaZ += .15f;
         }
     }
 }
