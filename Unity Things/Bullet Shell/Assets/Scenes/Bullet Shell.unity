@@ -1361,7 +1361,7 @@ PrefabInstance:
     - target: {fileID: 6898094170551963611, guid: 05e2a8f97f5f30849baa97e182542623,
         type: 3}
       propertyPath: m_Name
-      value: Bullet_Stretch
+      value: Bullet_Wall
       objectReference: {fileID: 0}
     - target: {fileID: 5405247064185282876, guid: 05e2a8f97f5f30849baa97e182542623,
         type: 3}
@@ -1554,6 +1554,11 @@ PrefabInstance:
     - target: {fileID: 7003942589015751408, guid: 931d247e1e76eec46814d8c69f78430e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083620723900924414, guid: 931d247e1e76eec46814d8c69f78430e,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

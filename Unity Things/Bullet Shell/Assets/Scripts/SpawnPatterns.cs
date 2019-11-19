@@ -41,7 +41,18 @@ public class SpawnPatterns : MonoBehaviour
             newPattern.GetComponent<Transform>().position = new Vector3(xPos, 0.8f, zPos);
             newPattern.GetComponent<Transform>().Rotate(0, rot, 0);
 
-            Invoke("SpawnPattern", Random.Range(1.0f, 5.0f)); //NOTE FOR LATER: put this line inside a conditional to check that the game is still running
+            //makes the game spawn enemies faster over time.
+            float t = Time.time; //To save some typing
+            float spawnRate;
+            if (t < 120)
+            {
+                spawnRate = (25+5.8f*t-0.0325f*t*t)/(t+4);
+            }
+            else
+            {
+                spawnRate = 1.4f;
+            }
+            Invoke("SpawnPattern", Random.Range(1.0f, spawnRate));
         }
     }
 

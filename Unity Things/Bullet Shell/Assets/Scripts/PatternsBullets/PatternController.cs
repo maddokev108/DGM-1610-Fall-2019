@@ -43,9 +43,34 @@ public class PatternController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        float gameTime = Time.time;
         //sets up all of the variables of the pattern
-        patternType = Random.Range(1, 3);//1;//
-        graphIndex = Random.Range(0, 2);//1;//
+
+        if (gameTime < 20) 
+        {
+            graphIndex = 0;
+            patternType = 2;
+        }
+        else if (gameTime < 40 ) 
+        {
+            graphIndex = Random.Range(0, 2);
+            patternType = 2;
+        }
+        else if (gameTime < 60 ) 
+        {
+            patternType = Random.Range(1,3);
+            graphIndex = Random.Range(0, 2);
+            if (patternType == 1) //If the pattern is rectangular...
+            {
+                graphIndex = 0; //... Spawn only walls
+            }
+        }
+        else 
+        {
+            graphIndex = Random.Range(0, 2);
+            patternType = Random.Range(1, 3);
+        }
+        // graphIndex = Random.Range(0, 2);//1;//
         travelSpeed = 5.0f;//Random.Range(1.0f, 20.0f);
         patternSize = 10f;
         
@@ -54,7 +79,9 @@ public class PatternController : MonoBehaviour
         {
             switch (graphIndex)
             {
-                case 0:
+
+
+                case 0: //wall | Third type
                     bulletsPerRow = 21;
                     rowCount = 1;
                     xBound = 50.0f;
@@ -65,18 +92,16 @@ public class PatternController : MonoBehaviour
                     patternSize = 0.1f;
                     // travelSpeed = 2.0f;
                     break;
-                case 1:
+                case 1: //snake | Fourth type
                     bulletsPerRow = 51;
                     rowCount = 1;
                     xBound = 5.0f;
                     zBound = 7.0f;
                     startXPosModifier = xBound / bulletsPerRow;
-                    startZPosModifier = zBound/ rowCount;
+                    startZPosModifier = 0;
                     bulletSpeed = 30.0f;
-                    graphIndex = 1;
                     // travelSpeed = 2.0f;
                     break;
-                
             }
             //empty for now
                         bulletPrefab = bulletPrefabRectList[graphIndex];
@@ -87,28 +112,28 @@ public class PatternController : MonoBehaviour
             bulletPrefab = bulletPrefabPolList[graphIndex];
             switch (graphIndex)
             {
-                case 0: //Rose20
+                case 0: //Rose20 | First type
                     bulletsPerRow = 20; //set up how many bullets belong in each row.
                     rowCount = 2; //set up how many rows belong in the pattern.
                     startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
                     bulletSpeed = 0.1f;
                     patternSize = 8.0f;
                     break;
-                case 1: //Cross
+                case 1: //Cross | Second Type
                     bulletsPerRow = 10; //set up how many bullets belong in each row.
                     rowCount = 1; //set up how many rows belong in the pattern.
                     bulletSpeed = 2.0f;
                     startThetaModifier = 5.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
                     patternSize = 7.0f;
                     break;
-                case 2: //Rose8
-                    bulletsPerRow = 8; //set up how many bullets belong in each row.
-                    rowCount = 2; //set up how many rows belong in the pattern.
-                    startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
-                    bulletSpeed = 0.5f;
-                    break;
+                // case 2: //Rose8
+                //     bulletsPerRow = 8; //set up how many bullets belong in each row.
+                //     rowCount = 2; //set up how many rows belong in the pattern.
+                //     startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
+                //     bulletSpeed = 0.5f;
+                //     break;
                 default:
-                    Debug.Log("error");
+                    Debug.Log("error: Graph type not defined");
                     break;
             }
         }

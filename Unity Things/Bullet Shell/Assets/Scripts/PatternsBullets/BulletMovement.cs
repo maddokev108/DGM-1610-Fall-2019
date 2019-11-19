@@ -84,15 +84,14 @@ public class BulletMovement : MonoBehaviour
             {
                 switch(graphIndex)
                 {
-                    case 0:
+                    case 0: //Wall
                         // deltaX = epsilon * speed * Time.deltaTime * size;
                         // boundCheckX();
                         // xPos += deltaX * directionModifier;
                         // zPos = xPos * xPos * xPos / 10;
                         // xPos = xBound / 2 - bulletID + 1;
                         break;
-                    case 1:
-                        //empty for now
+                    case 1: //Snake
                         deltaX = epsilon * speed * Time.deltaTime;
                         boundCheckX();
                         xPos += deltaX * directionModifier;
@@ -108,24 +107,24 @@ public class BulletMovement : MonoBehaviour
             {
                 switch(graphIndex)
                 {
-                    case 0: //SinRose4
+                    case 0: //Rose10
                         deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
                         theta += deltaTheta; //* directionModifier;
                         radius = Mathf.Sin(10*theta) * size;
                         break;
 
-                    case 1: //Cos Cross
+                    case 1: //Cross
                         deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
                         theta += deltaTheta; //* directionModifier;
                         radius = Mathf.Cos((3.0f/5.0f)*theta/Mathf.PI) * size;
                         break;
                         //goto case 0;
 
-                    case 2: //SinRose10
-                        deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
-                        theta += deltaTheta; //* directionModifier;
-                        radius = Mathf.Abs(Mathf.Sin(4*theta)) * size;
-                        break;
+                    // case 2: //SinRose10
+                    //     deltaTheta = epsilon * speed * Time.deltaTime * Mathf.PI;
+                    //     theta += deltaTheta; //* directionModifier;
+                    //     radius = Mathf.Abs(Mathf.Sin(4*theta)) * size;
+                    //     break;
 
                     default:
                         Debug.Log("error: no case specified for graph type " + graphPolList[graphIndex]);
@@ -150,10 +149,6 @@ public class BulletMovement : MonoBehaviour
 
             directionModifier *= -1;
             deltaX += .15f;
-            if (Mathf.Abs(xPos) >= (xBound + .5f) )
-            {
-                deltaX = 0;
-            }
         }
 
     }
