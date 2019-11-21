@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollisionDetection : MonoBehaviour
 {
     internal bool gameOver = false;
-    internal int lives = 1000;
+    internal int lives = 7;
     private PlayerController PlayerControllerScript;
     private float playerBonusMultiplier; //just made this to save myself some typing.
     private float previousMultiplier; //used by the score pickup so that stacked multipliers won't lose their effects all at once.
@@ -70,7 +70,8 @@ public class CollisionDetection : MonoBehaviour
                     if (lives <= 0) //If the player is dead...
                     {
                         //... End the game.
-                        Debug.Log("Game Over"); 
+                        Debug.Log("Game Over. Time: " + Time.time); 
+
                         gameOver = true;
                     }
                 }

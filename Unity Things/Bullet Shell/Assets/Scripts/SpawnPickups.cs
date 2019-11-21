@@ -36,17 +36,17 @@ public class SpawnPickups : MonoBehaviour
     {
         int choice;
         float chance = Random.Range(0.0f, 100.0f);
-        if (chance >= 90.0f) //10% chance to...
+        if (chance >= 75.0f) //25% chance to...
         {
             //...choose Life Pickup.
             choice = 0; 
         }
-        else if (chance >= 60) //30% chance to...
+        else if (chance >= 50) //25% chance to...
         {
             //...choose Speed Pickup.
             choice = 1;
         }
-        else //60% chance to...
+        else //50% chance to...
         {
             //...choose Score Multiplier Pickup
             choice = 2;

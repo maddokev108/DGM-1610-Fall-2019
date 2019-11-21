@@ -71,10 +71,15 @@ public class PatternController : MonoBehaviour
             patternType = Random.Range(1, 3);
         }
         // graphIndex = Random.Range(0, 2);//1;//
-        travelSpeed = 5.0f;//Random.Range(1.0f, 20.0f);
         patternSize = 10f;
-        
-
+        if ( Time.time < 100)
+        { 
+            travelSpeed = 5.0f + .05f * Time.time;//Random.Range(1.0f, 20.0f);
+        }
+        else
+        {
+            travelSpeed = 10f;
+        }
         if (patternType == 1)
         {
             switch (graphIndex)
@@ -100,7 +105,7 @@ public class PatternController : MonoBehaviour
                     startXPosModifier = xBound / bulletsPerRow;
                     startZPosModifier = 0;
                     bulletSpeed = 30.0f;
-                    // travelSpeed = 2.0f;
+                    travelSpeed *= 2.0f;
                     break;
             }
             //empty for now
@@ -117,7 +122,7 @@ public class PatternController : MonoBehaviour
                     rowCount = 2; //set up how many rows belong in the pattern.
                     startThetaModifier = 2.0f * Mathf.PI / bulletsPerRow / rowCount; //create the formula for initializing the theta values for bullets.
                     bulletSpeed = 0.1f;
-                    patternSize = 8.0f;
+                    patternSize = 16.0f;
                     break;
                 case 1: //Cross | Second Type
                     bulletsPerRow = 10; //set up how many bullets belong in each row.

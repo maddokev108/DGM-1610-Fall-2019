@@ -46,11 +46,11 @@ public class SpawnPatterns : MonoBehaviour
             float spawnRate;
             if (t < 120)
             {
-                spawnRate = (25+5.8f*t-0.0325f*t*t)/(t+4);
+                spawnRate = ((25+5.8f*t-0.0325f*t*t)/(t+4)) * .8f;
             }
             else
             {
-                spawnRate = 1.4f;
+                spawnRate = 0.7f;
             }
             Invoke("SpawnPattern", Random.Range(1.0f, spawnRate));
         }
