@@ -10,6 +10,8 @@ using UnityEngine;
 public class SpawnPickups : MonoBehaviour
 {
     public GameObject[] pickupPrefabList;
+    private GameObject gameManager;
+    private LifeScoreManager lifeScoreManagerScript;
 
     private float zBound = 5.0f;
     private float xBound = 10.0f;
@@ -18,12 +20,14 @@ public class SpawnPickups : MonoBehaviour
     void Start()
     {
         Invoke("SpawnPickup", Random.Range(.50f, 1.00f));
+        gameManager = GameObject.Find("Game Manager");
+        lifeScoreManagerScript = gameManager.GetComponent<LifeScoreManager>();
     }
 
     void SpawnPickup()
     {
-        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
-        if (!gameOver) //checks to see if the game is still running.
+        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        if (!isGameOver) //checks to see if the game is still running.
         {
             GameObject pickupPrefab = ChooseRandomPickupType(); //randomly select a pick-up type
             float rot = Random.Range(0.0f, 180.0f);
@@ -41,12 +45,12 @@ public class SpawnPickups : MonoBehaviour
             //...choose Life Pickup.
             choice = 0; 
         }
-        else if (chance >= 50) //25% chance to...
+        else if (chance >= 37.5f) //37.5% chance to...
         {
             //...choose Speed Pickup.
             choice = 1;
         }
-        else //50% chance to...
+        else //37.5% chance to...
         {
             //...choose Score Multiplier Pickup
             choice = 2;

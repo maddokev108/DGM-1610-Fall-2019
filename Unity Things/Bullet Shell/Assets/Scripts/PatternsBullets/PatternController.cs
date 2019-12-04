@@ -156,8 +156,8 @@ public class PatternController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
-        if (!gameOver) //checks to see if the game is still running.
+        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        if (!isGameOver) //checks to see if the game is still running.
         {
             //moves the pattern forward
             transform.Translate(Vector3.forward * Time.deltaTime * travelSpeed);

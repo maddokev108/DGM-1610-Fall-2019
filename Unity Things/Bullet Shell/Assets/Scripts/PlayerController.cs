@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     internal float previousSpeed; //to prevent the player's speed from resetting every time they hide.
     private float horizontalInput;
     private float forwardInput;
-    internal bool hidden = false;
+    internal bool isHiding = false;
     private float xBound = 17.8f;
     private float zBound = 10.0f;
 
@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
-        if (!gameOver) //checks to see if the game is still running.
+        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        if (!isGameOver) //checks to see if the game is still running.
         {
             // transform.Translate(Vector3.up * ( 0.492f - transform.position.y) );
 
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-            if( !hidden) //If the player is not hidden...
+            if (!isHiding) //If the player is not hidden...
             {
                 //...Save the player's speed
                 previousSpeed = speed;
@@ -83,14 +83,14 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetAxisRaw("Hide") != 0 ) //When the "hide" button is pressed down...
                 {
                     speed = 0; //...Stop the player from moving
-                    hidden = true;
+                    isHiding = true;
                 }
                 
             }
             else if (Input.GetAxisRaw("Hide") == 0) //When the "hide" button is released...
             {
                 speed = previousSpeed; //...Let the player move again
-                hidden = false;
+                isHiding = false;
             }
         }
         else{

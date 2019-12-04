@@ -6,7 +6,7 @@ using UnityEngine;
     NOTE TO SELF: WHAT THIS SCRIPT DOES
       - instantiates the bullet patterns off-screen
           + rotates the bullet patterns to face some direction such that they travel across the screen.
- */
+*/
 
 public class SpawnPatterns : MonoBehaviour
 {
@@ -24,8 +24,8 @@ public class SpawnPatterns : MonoBehaviour
     //Spawn a bullet pattern
     void SpawnPattern()
     {
-        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
-        if (!gameOver) //checks to see if the game is still running.
+        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        if (!isGameOver) //checks to see if the game is still running.
         {
             //Chooses random off-screen position
             int rand = (( Random.Range(1, 3) - 1 ) * 2) - 1; //Steps: |1. RNG| 1 or 2. |2. N-1| 0 or 1. |3. N*2| 0 or 2. |4. N-1| -1 or 1.
@@ -44,7 +44,7 @@ public class SpawnPatterns : MonoBehaviour
             //makes the game spawn enemies faster over time.
             float t = Time.time; //To save some typing
             float spawnRate;
-            if (t < 120)
+            if (t < 150)
             {
                 spawnRate = ((25+5.8f*t-0.0325f*t*t)/(t+4)) * .8f;
             }

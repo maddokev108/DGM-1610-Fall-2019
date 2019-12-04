@@ -77,8 +77,8 @@ public class BulletMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool gameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().gameOver;
-        if (!gameOver) //checks to see if the game is still running.
+        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        if (!isGameOver) //checks to see if the game is still running.
         {
             if (patternType == 1)
             {

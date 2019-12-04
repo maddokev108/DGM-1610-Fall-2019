@@ -4,116 +4,97 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
-    internal bool gameOver = false;
-    internal int lives = 7;
     private PlayerController PlayerControllerScript;
-    private float playerBonusMultiplier; //just made this to save myself some typing.
-    private float previousMultiplier; //used by the score pickup so that stacked multipliers won't lose their effects all at once.
-
-    internal int score = 0; //score, to be tracked by UI later in development. Increases 
-    internal float bonusMultiplier = 1.0f;
+    private GameObject gameManager;
+    private LifeScoreManager lifeScoreManagerScript;
+    private GameObject gameOverScreen;
+    internal bool isGameOver = false;
+    private int lives;
+    private List<int> previousMultiplierList = new List<int>(); //used by the score pickup so that stacked multipliers won't lose their effects all at once.
+    private int score; //score, to be tracked by UI later in development.
+    internal int bonusMultiplier = 1;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager");
+        gameOverScreen = GameObject.Find("Game Over Screen");
         PlayerControllerScript = gameObject.GetComponent<PlayerController>();
-        // playerBonusMultiplier = PlayerControllerScript.bonusMultiplier;
+        lifeScoreManagerScript = gameManager.GetComponent<LifeScoreManager>();
+
+        score = lifeScoreManagerScript.score;
+        gameOverScreen.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (true)
-        {
-            //Update the Score
-            {
-                float scoreIncrease = 100 * Time.deltaTime * bonusMultiplier;
-                score += Mathf.RoundToInt(scoreIncrease); 
-                //Debug.Log("Score incremented by: " + scoreIncrease + ". Score is now: " + score + ". Current time (seconds): " + Time.time);
-            }
-        }
+        // if (!isGameOver)
+        // {
+        //     //Update the Score
+        //     {
+        //         float scoreIncrease = 100 * Time.deltaTime * bonusMultiplier;
+        //         score += Mathf.RoundToInt(scoreIncrease); 
+        //         //Debug.Log("Score incremented by: " + scoreIncrease + ". Score is now: " + score + ". Current time (seconds): " + Time.time);
+        //     }
+        // }
     }
 
     void OnTriggerEnter(Collider other)
     {
         GameObject collidedObject = other.gameObject;
-        if (!collidedObject.CompareTag("Untagged"))
+        if (!collidedObject.CompareTag("Untagged") && !isGameOver) //if the player hits something important while the game is running...
         {
-            Destroy(collidedObject);
-            
-            if (collidedObject.CompareTag("Bullet")) //If the player hits a bullet...
+            Destroy(collidedObject); //destroy the thing
+            switch(collidedObject.tag)
             {
-                if (!PlayerControllerScript.hidden) //If the player is not hidden...
-                {
-                    //... Lose a life.
-                    lives--;
+                case "Bullet": //If the player hits a bullet...
+                    lifeScoreManagerScript.UpdateScore(-500); //subtract 500 points (about 5 seconds worth of score).
 
-                    // //subtract 500 points (about 5 seconds worth.
-                    // float playerScore = PlayerControllerScript.score;
-                    // playerScore = playerScore - 500;
-                    // if (playerScore < 0) //If the score is negative...
-                    // {
-                    //     //... Set it to 0.
-                    //     playerScore = 0;
-                    // }
-
-                    //subtract 500 points (about 5 seconds worth.
-                    score = score - 500;
-                    if (score < 0) //If the score is negative...
+                    if (!PlayerControllerScript.isHiding) //If the player is not hidden...
                     {
-                        //... Set it to 0.
-                        score = 0;
+                        lifeScoreManagerScript.UpdateLives(-1); //... Lose a life.
+
+                        if (lifeScoreManagerScript.lives <= 0) //If the player is dead...
+                        {
+                            lifeScoreManagerScript.lives = 0; //set lives to 0 (just in case it went negative).
+                            isGameOver = true; //... End the game.
+                            Debug.Log("Game Over. Time: " + Time.time + ". Score: " + score + "."); //debug message.
+                            gameOverScreen.SetActive(true);
+                        }
                     }
-
-                    Debug.Log("Hit. Lives remaining: " + lives + ". Score Remaining: " + score );
-                    if (lives <= 0) //If the player is dead...
-                    {
-                        //... End the game.
-                        Debug.Log("Game Over. Time: " + Time.time); 
-
-                        gameOver = true;
-                    }
-                }
-
-            }
-            else if ( collidedObject.CompareTag("LifePickup") ) //If the player hits a 1-Up...
-            {
-                //... Add a life.
-                lives++;
-                Debug.Log("Life Pickup collected. Effect: 1-UP. Lives Remaining: " + lives);
-
-            }
-            else if ( collidedObject.CompareTag("SpeedPickup") ) //If the player hits a Speed boost...
-            {
-                //... Speed up the player.
-                PlayerControllerScript.speed += 0.5f;
-                Debug.Log("Speed Pickup collected. Effect: Speed Up. Current Speed: " + PlayerControllerScript.speed);
-
-            }
-            else if ( collidedObject.CompareTag("ScorePickup") ) //If the player hits a Score Multiplier...
-            {
-                //... Temporarily boost the score gained over time.
-                // previousMultiplier = playerBonusMultiplier;
-                // playerBonusMultiplier = playerBonusMultiplier + ( 5.0f - (5.0f / (Time.time / 20 + 1)) + 1 / ((Time.time / 10) + 1)); //The bonus multiplier has a maximum value infinitely approaching 5. The multiplier will start at x1.0 (at game start), and it will be larger based on how long the round has been going on.
-                // StartCoroutine(BonusMultiplierCountdownRoutine());
-                // Debug.Log("Score Pickup collected. Effect: Temporary Bonus Multiplier. Current Score Multiplier: " + playerBonusMultiplier);
-
-                previousMultiplier = bonusMultiplier;
-                bonusMultiplier = bonusMultiplier + ( 5.0f - (5.0f / (Time.time / 20 + 1)) + 1 / ((Time.time / 10) + 1)); //The bonus multiplier has a maximum value infinitely approaching 5. The multiplier will start at x1.0 (at game start), and it will be larger based on how long the round has been going on.
-                StartCoroutine(BonusMultiplierCountdownRoutine());
-                Debug.Log("Score Pickup collected. Effect: Temporary Bonus Multiplier. Current Score Multiplier: " + bonusMultiplier);
+                    break;
+                case "LifePickup": //If the player hits a 1-Up...
+                    //... Add a life.
+                    lifeScoreManagerScript.UpdateLives(1);
+                    break;
+                
+                case "SpeedPickup": //If the player hits a Speed boost...
+                    //... Speed up the player.
+                    PlayerControllerScript.speed += 0.5f;
+                    Debug.Log("Speed Pickup collected. Effect: Speed Up. Current Speed: " + PlayerControllerScript.speed);
+                    break;
+                
+                case "ScorePickup": //If the player hits a Score Multiplier...
+                    //... Temporarily boost the score gained over time.
+                    previousMultiplierList.Add(bonusMultiplier);
+                    bonusMultiplier = Mathf.RoundToInt( bonusMultiplier + 4.3f - (5 / (Time.time / 20 + 1)) + 1 / ((Time.time / 10) + 1) ); //The bonus multiplier has a maximum value 5. The multiplier will start at x1 (at game start), and it will be larger based on how long the round has been going on. This bonus is stackable (additive).
+                    StartCoroutine(BonusMultiplierCountdownRoutine());
+                    Debug.Log("Score Pickup collected. Effect: Temporary Bonus Multiplier. Current Score Multiplier: " + bonusMultiplier);
+                    break;
             }
         }
     }
 
     IEnumerator BonusMultiplierCountdownRoutine()
     {
-        //wait 10 seconds
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(10); //wait 10 seconds
 
         //remove effect.
-        bonusMultiplier = previousMultiplier;
-        Debug.Log("Bonus Multiplier over");
+        int index = previousMultiplierList.Count-1; //finds the index of the last item in previousMultiplierList. This item is the previous value of the score multiplier.
+        bonusMultiplier = previousMultiplierList[index]; //sets the score multiplier to its previous value.
+        previousMultiplierList.RemoveAt(index); //removes the stored value from the list.
+        Debug.Log("Bonus Multiplier over. Current Score Multiplier: " + bonusMultiplier); //debug message
     }
 }
