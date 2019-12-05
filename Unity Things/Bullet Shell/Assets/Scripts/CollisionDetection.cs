@@ -2,16 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* NOTE TO SELF: THIS SCRIPT SHOULD NOT BE THE MAIN STORAGE PLACE OF score, lives, or isGameOver. those have been moved to Game Manager. */
+
 public class CollisionDetection : MonoBehaviour
 {
-    private PlayerController PlayerControllerScript;
-    private GameObject gameManager;
-    private LifeScoreManager lifeScoreManagerScript;
-    private GameObject gameOverScreen;
-    internal bool isGameOver = false;
-    private int lives;
+/*================
+    References
+================*/
+  /*---------
+    private
+  ---------*/
+  //--Object References
+    // private GameObject gameOverScreen; //Game Over Screen
+    private GameObject gameManager; //Game Manager
+  //--Script References
+    private PlayerController PlayerControllerScript; //PlayerController script reference
+    private GameManager gameManagerScript; //GameManager script reference
+  //--Variable References
+    private bool isGameOver; //tracks if the game is over. retrieved from GameManager
+    private int lives; //lives, retrieved from GameManager
+/*===============
+    Variables
+===============*/
+  /*---------
+    private
+  ---------*/
     private List<int> previousMultiplierList = new List<int>(); //used by the score pickup so that stacked multipliers won't lose their effects all at once.
-    private int score; //score, to be tracked by UI later in development.
+
+  /*----------
+    internal
+  ----------*/
     internal int bonusMultiplier = 1;
 
 
@@ -19,30 +39,17 @@ public class CollisionDetection : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager");
-        gameOverScreen = GameObject.Find("Game Over Screen");
+        // gameOverScreen = GameObject.Find("Game Over Screen");
         PlayerControllerScript = gameObject.GetComponent<PlayerController>();
-        lifeScoreManagerScript = gameManager.GetComponent<LifeScoreManager>();
+        gameManagerScript = gameManager.GetComponent<GameManager>();
 
-        score = lifeScoreManagerScript.score;
-        gameOverScreen.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // if (!isGameOver)
-        // {
-        //     //Update the Score
-        //     {
-        //         float scoreIncrease = 100 * Time.deltaTime * bonusMultiplier;
-        //         score += Mathf.RoundToInt(scoreIncrease); 
-        //         //Debug.Log("Score incremented by: " + scoreIncrease + ". Score is now: " + score + ". Current time (seconds): " + Time.time);
-        //     }
-        // }
+        // gameOverScreen.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)
     {
+        isGameOver = gameManagerScript.isGameOver; //see if the game is over yet.
+
         GameObject collidedObject = other.gameObject;
         if (!collidedObject.CompareTag("Untagged") && !isGameOver) //if the player hits something important while the game is running...
         {
@@ -50,24 +57,24 @@ public class CollisionDetection : MonoBehaviour
             switch(collidedObject.tag)
             {
                 case "Bullet": //If the player hits a bullet...
-                    lifeScoreManagerScript.UpdateScore(-500); //subtract 500 points (about 5 seconds worth of score).
+                    gameManagerScript.UpdateScore(-500); //subtract 500 points (about 5 seconds worth of score).
 
                     if (!PlayerControllerScript.isHiding) //If the player is not hidden...
                     {
-                        lifeScoreManagerScript.UpdateLives(-1); //... Lose a life.
+                        gameManagerScript.UpdateLives(-1); //... Lose a life.
 
-                        if (lifeScoreManagerScript.lives <= 0) //If the player is dead...
-                        {
-                            lifeScoreManagerScript.lives = 0; //set lives to 0 (just in case it went negative).
-                            isGameOver = true; //... End the game.
-                            Debug.Log("Game Over. Time: " + Time.time + ". Score: " + score + "."); //debug message.
-                            gameOverScreen.SetActive(true);
-                        }
+                        // if (gameManagerScript.lives <= 0) //If the player is dead...
+                        // {
+                        //     gameManagerScript.lives = 0; //set lives to 0 (just in case it went negative).
+                        //     isGameOver = true; //... End the game.
+                        //     Debug.Log("Game Over. Time: " + gameManagerScript.playTime + ". Score: " + score + "."); //debug message.
+                        //     gameOverScreen.SetActive(true);
+                        // }
                     }
                     break;
                 case "LifePickup": //If the player hits a 1-Up...
                     //... Add a life.
-                    lifeScoreManagerScript.UpdateLives(1);
+                    gameManagerScript.UpdateLives(1);
                     break;
                 
                 case "SpeedPickup": //If the player hits a Speed boost...
@@ -79,7 +86,7 @@ public class CollisionDetection : MonoBehaviour
                 case "ScorePickup": //If the player hits a Score Multiplier...
                     //... Temporarily boost the score gained over time.
                     previousMultiplierList.Add(bonusMultiplier);
-                    bonusMultiplier = Mathf.RoundToInt( bonusMultiplier + 4.3f - (5 / (Time.time / 20 + 1)) + 1 / ((Time.time / 10) + 1) ); //The bonus multiplier has a maximum value 5. The multiplier will start at x1 (at game start), and it will be larger based on how long the round has been going on. This bonus is stackable (additive).
+                    bonusMultiplier = Mathf.RoundToInt( bonusMultiplier + 4.3f - (5 / (gameManagerScript.playTime / 20 + 1)) + 1 / ((gameManagerScript.playTime / 10) + 1) ); //The bonus multiplier has a maximum value 5. The multiplier will start at x1 (at game start), and it will be larger based on how long the round has been going on. This bonus is stackable (additive).
                     StartCoroutine(BonusMultiplierCountdownRoutine());
                     Debug.Log("Score Pickup collected. Effect: Temporary Bonus Multiplier. Current Score Multiplier: " + bonusMultiplier);
                     break;

@@ -11,22 +11,23 @@ public class SpawnPickups : MonoBehaviour
 {
     public GameObject[] pickupPrefabList;
     private GameObject gameManager;
-    private LifeScoreManager lifeScoreManagerScript;
+    private GameManager gameManagerScript;
 
     private float zBound = 5.0f;
     private float xBound = 10.0f;
 
-    // Start is called before the first frame update
-    void Start()
+    //enables spawning.
+    public void StartSpawning()
     {
-        Invoke("SpawnPickup", Random.Range(.50f, 1.00f));
-        gameManager = GameObject.Find("Game Manager");
-        lifeScoreManagerScript = gameManager.GetComponent<LifeScoreManager>();
+        Invoke("SpawnPickup", Random.Range(.50f, 1.00f)); //start spawning.
+        gameManager = GameObject.Find("Game Manager"); //find the Game Manager object.
+        gameManagerScript = gameManager.GetComponent<GameManager>(); //find the GameManager script.
     }
 
+    //spawns a pickup, then calls itself after a randomized delay.
     void SpawnPickup()
     {
-        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        bool isGameOver = gameManagerScript.isGameOver;
         if (!isGameOver) //checks to see if the game is still running.
         {
             GameObject pickupPrefab = ChooseRandomPickupType(); //randomly select a pick-up type
@@ -36,6 +37,8 @@ public class SpawnPickups : MonoBehaviour
             Invoke("SpawnPickup", Random.Range(5.0f, 10.0f));
         }
     }
+
+    //picks a pickup type based on set probabilities.
     GameObject ChooseRandomPickupType()
     {
         int choice;

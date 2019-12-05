@@ -18,32 +18,38 @@ using UnityEngine;
 
 public class PatternController : MonoBehaviour
 {
-    //declare vars
-        public int patternType; //This represents whether the pattern's equation is rectangular (1) or polar (2).
-        public int graphIndex; //This represents which graph/paths to use.
-        public float travelSpeed; //The speed at which the whole pattern moves
-        public float bulletSpeed; //The speed at which the bullets move within the pattern
-        public float patternSize; //the scale of the pattern
+//references
+    private GameObject gameManager;
+    private GameManager gameManagerScript;
 
-        public int bulletsPerRow;
-        public int rowCount;
-        public float xBound; //the x boundaries (local space) for rectangular patterns
-        public float zBound; //the z boundaries (local space) for rectangular patterns
+//declare vars
+    internal int patternType; //This represents whether the pattern's equation is rectangular (1) or polar (2).
+    internal int graphIndex; //This represents which graph/paths to use.
+    internal float travelSpeed; //The speed at which the whole pattern moves
+    internal float bulletSpeed; //The speed at which the bullets move within the pattern
+    internal float patternSize; //the scale of the pattern
 
-        public GameObject[] bulletPrefabRectList; //list of bullet prefabs for rectangular patterns
-        public GameObject[] bulletPrefabPolList; //list of bullet prefabs for polar patterns
-        public GameObject bulletPrefab; //this will be the final choice for the bullet prefab used by this pattern.
+    internal int bulletsPerRow; //number of bullets per row of the pattern
+    internal int rowCount; //number of rows in the pattern (only seems to truly work that way on the Sine pattern, but I actually like how it works with the others.)
+    internal float xBound; //the x boundaries (local space) for rectangular patterns
+    internal float zBound; //the z boundaries (local space) for rectangular patterns
 
-        public float startThetaModifier; //this is the starting value of theta, but without any bulletID factored in. It will act as a sort of formula for initializing the values of theta in each bullet as they spawn.
-        public float startXPosModifier; //the formula for generating each bullet's initial x position (local space) 
-        public float startZPosModifier; //the formula for generating each bullet's initial z position (local space) 
+    public GameObject[] bulletPrefabRectList; //list of bullet prefabs for rectangular patterns
+    public GameObject[] bulletPrefabPolList; //list of bullet prefabs for polar patterns
+    public GameObject bulletPrefab; //this will be the final choice for the bullet prefab used by this pattern.
+
+    private float startThetaModifier; //this is the starting value of theta, but without any bulletID factored in. It will act as a sort of formula for initializing the values of theta in each bullet as they spawn.
+    private float startXPosModifier; //the formula for generating each bullet's initial x position (local space) 
+    private float startZPosModifier; //the formula for generating each bullet's initial z position (local space) 
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        float gameTime = Time.time;
+        gameManager = GameObject.Find("Game Manager");
+        gameManagerScript = gameManager.GetComponent<GameManager>();
+        float gameTime = gameManagerScript.playTime;
         //sets up all of the variables of the pattern
 
         if (gameTime < 20) 
@@ -72,9 +78,9 @@ public class PatternController : MonoBehaviour
         }
         // graphIndex = Random.Range(0, 2);//1;//
         patternSize = 10f;
-        if ( Time.time < 100)
+        if ( gameManagerScript.playTime < 100)
         { 
-            travelSpeed = 5.0f + .05f * Time.time;//Random.Range(1.0f, 20.0f);
+            travelSpeed = 5.0f + .05f * gameManagerScript.playTime;//Random.Range(1.0f, 20.0f);
         }
         else
         {
@@ -156,7 +162,7 @@ public class PatternController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        bool isGameOver = GameObject.Find("Game Manager").GetComponent<GameManager>().isGameOver;
         if (!isGameOver) //checks to see if the game is still running.
         {
             //moves the pattern forward

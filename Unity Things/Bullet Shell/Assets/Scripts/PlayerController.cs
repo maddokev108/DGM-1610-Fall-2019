@@ -2,67 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*NOTE TO SELF: the cursor locking functionality of this script has been moved to GameManager. */
+
 public class PlayerController : MonoBehaviour
 {
-    internal float speed = 5.5f;
-    internal float previousSpeed; //to prevent the player's speed from resetting every time they hide.
-    private float horizontalInput;
-    private float forwardInput;
-    internal bool isHiding = false;
-    private float xBound = 17.8f;
-    private float zBound = 10.0f;
+    private float xBound = 17.8f; //left-right screen bounds
+    private float zBound = 10.0f; //top-bottom screen bounds
 
-    private bool cursorToggledOff;
+    internal float speed = 5.5f; //player movement speed
+    internal float previousSpeed; //stores the player's speed so it doesn't reset every time they hide
+    internal bool isHiding = false; //tracks whether or not the player is hiding in their shell
+
+
+    // private bool cursorToggledOff; //tracks whether or not the cursor is enabled.
 
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        cursorToggledOff = true;
+        // ToggleCursorOff();
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool isGameOver = GameObject.Find("Player").GetComponent<CollisionDetection>().isGameOver;
+        bool isGameOver = GameObject.Find("Game Manager").GetComponent<GameManager>().isGameOver;
         if (!isGameOver) //checks to see if the game is still running.
         {
-            // transform.Translate(Vector3.up * ( 0.492f - transform.position.y) );
+            float xPos = transform.position.x; //tracks the player's x position
+            float zPos = transform.position.z; //tracks the player's z position
+            float horizontalInput = Input.GetAxisRaw("Mouse X"); //get horizontal mouse movement.
+            float forwardInput = Input.GetAxisRaw("Mouse Y"); //get vertical mouse movement.
 
-
-
-
-            // //This code controls the player's movement.
-            // horizontalInput = Input.GetAxis("Horizontal");
-            // forwardInput = Input.GetAxis("Vertical");
-            horizontalInput = Input.GetAxisRaw("Mouse X");
-            forwardInput = Input.GetAxisRaw("Mouse Y");
-
-            // //This code makes the player move
+            //This code makes the player move
             transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
             transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
 
-             float xPos = transform.position.x; //tracks the player's x position
-             float zPos = transform.position.z; //tracks the player's z position
 
 
-
-            if(Input.GetKeyUp("left ctrl"))
-            {
-                if (cursorToggledOff)
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                    cursorToggledOff = false;
-                }
-                else
-                {
-                    Cursor.lockState = CursorLockMode.Locked;
-                    cursorToggledOff = true;
-                }
-            }
-
-            float speedAdjusterInput = Input.GetAxisRaw("Vertical");
-                speed += 0.1f * speedAdjusterInput;
+            // if(Input.GetKeyUp("left ctrl"))
+            // {
+            //     if (cursorToggledOff) //if the cursor is currently locked...
+            //     {   
+            //         ToggleCursorOn(); //... unlock it.
+            //     }
+            //     else //If the cursor is currently unlocked...
+            //     {
+            //         ToggleCursorOff(); //... lock it.
+            //     }
+            // }
 
             if (Mathf.Abs(xPos) > xBound) //if the player is out of bounds (x)...
             {
@@ -75,27 +63,38 @@ public class PlayerController : MonoBehaviour
 
 
 
-            if (!isHiding) //If the player is not hidden...
+            if (!isHiding) //If the player is not hiding...
             {
-                //...Save the player's speed
-                previousSpeed = speed;
+                previousSpeed = speed; //... Save the player's speed
 
-                if (Input.GetAxisRaw("Hide") != 0 ) //When the "hide" button is pressed down...
+                if (Input.GetAxisRaw("Hide") != 0 ) //if the "Hide" button is pressed down...
                 {
                     speed = 0; //...Stop the player from moving
-                    isHiding = true;
+                    isHiding = true; //update bool.
                 }
-                
-            }
-            else if (Input.GetAxisRaw("Hide") == 0) //When the "hide" button is released...
-            {
-                speed = previousSpeed; //...Let the player move again
-                isHiding = false;
+                else //Otherwise...
+                {
+                    speed = previousSpeed; //... Let the player move again.
+                    isHiding = false; //update bool.
+                }
             }
         }
         else{
-            Cursor.lockState = CursorLockMode.None;
-            cursorToggledOff = false;
+            // ToggleCursorOn();
         }
     }
+
+    // //locks the cursor
+    // void ToggleCursorOff()
+    // {
+    //         Cursor.lockState = CursorLockMode.Locked; //lock it.
+    //         cursorToggledOff = true; //update bool.
+    // }
+
+    // //unlocks the cursor
+    // void ToggleCursorOn()
+    // {
+    //     Cursor.lockState = CursorLockMode.None; //unlock it.
+    //     cursorToggledOff = false; //update bool
+    // }
 }
