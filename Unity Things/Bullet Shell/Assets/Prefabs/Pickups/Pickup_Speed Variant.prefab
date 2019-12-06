@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1158465387934553005, guid: 031c045c69a1ac74694796795e1af4f3,
+        type: 3}
+      propertyPath: m_Color.rgba
+      value: 353239012
+      objectReference: {fileID: 0}
     - target: {fileID: 175824359267871749, guid: 031c045c69a1ac74694796795e1af4f3,
         type: 3}
       propertyPath: m_Name
@@ -71,6 +76,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b10b38d40ed11434ca5ce51c4948cead, type: 2}
+      objectReference: {fileID: 2100000, guid: 24bbcef98a1fb414392b6816ed6b5732, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 031c045c69a1ac74694796795e1af4f3, type: 3}

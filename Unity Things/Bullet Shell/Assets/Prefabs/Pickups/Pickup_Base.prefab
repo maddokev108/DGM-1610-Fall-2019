@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 175824359267871867}
   - component: {fileID: 175824359267871748}
   - component: {fileID: 776053087}
+  - component: {fileID: -1158465387934553005}
   m_Layer: 0
   m_Name: Pickup_Base
   m_TagString: SpeedPickup
@@ -107,3 +108,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifespan: 10
   born: 0
+--- !u!122 &-1158465387934553005
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175824359267871749}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 369098751
+  m_Size: 1

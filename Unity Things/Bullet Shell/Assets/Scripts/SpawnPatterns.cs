@@ -52,7 +52,7 @@ public class SpawnPatterns : MonoBehaviour
             float spawnRate;
             if (playTime < 150)
             {
-                spawnRate = ((25 + 5.8f * playTime - 0.0325f * playTime * playTime) / (playTime + 4)) * 0.8f; //spawnRate gradually decreases (gets faster) according to this equation.
+                spawnRate = ((25 + 5.8f * playTime - 0.0325f * playTime * playTime) / (playTime + 4)) * 0.7f; //spawnRate gradually decreases (gets faster) according to this equation.
             }
             else
             {

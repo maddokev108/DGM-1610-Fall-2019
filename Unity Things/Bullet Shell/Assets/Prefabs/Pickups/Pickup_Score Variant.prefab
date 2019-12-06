@@ -7,10 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1158465387934553005, guid: 031c045c69a1ac74694796795e1af4f3,
+        type: 3}
+      propertyPath: m_Color.rgba
+      value: 369052917
+      objectReference: {fileID: 0}
     - target: {fileID: 175824359267871749, guid: 031c045c69a1ac74694796795e1af4f3,
         type: 3}
       propertyPath: m_Name
-      value: Pickup_Score
+      value: Pickup_Score Variant
       objectReference: {fileID: 0}
     - target: {fileID: 175824359267871749, guid: 031c045c69a1ac74694796795e1af4f3,
         type: 3}

@@ -9,18 +9,18 @@ public class CollisionDetection : MonoBehaviour
 /*================
     References
 ================*/
-  /*---------
-    private
-  ---------*/
-  //--Object References
-    // private GameObject gameOverScreen; //Game Over Screen
+  //--Object/Script/Etc. References
     private GameObject gameManager; //Game Manager
-  //--Script References
     private PlayerController PlayerControllerScript; //PlayerController script reference
     private GameManager gameManagerScript; //GameManager script reference
+    private AudioSource audioController; //Player's AudioSource component
+    public AudioClip clink; //clink sound effect. plays when player is hit while hiding.
+    public AudioClip squeak; //squeak sound effect. plays when player collects a powerup.
   //--Variable References
     private bool isGameOver; //tracks if the game is over. retrieved from GameManager
     private int lives; //lives, retrieved from GameManager
+
+
 /*===============
     Variables
 ===============*/
@@ -40,9 +40,9 @@ public class CollisionDetection : MonoBehaviour
     {
         gameManager = GameObject.Find("Game Manager");
         // gameOverScreen = GameObject.Find("Game Over Screen");
-        PlayerControllerScript = gameObject.GetComponent<PlayerController>();
         gameManagerScript = gameManager.GetComponent<GameManager>();
-
+        PlayerControllerScript = gameObject.GetComponent<PlayerController>();
+        audioController = gameObject.GetComponent<AudioSource>();
         // gameOverScreen.SetActive(false);
     }
 
@@ -53,7 +53,7 @@ public class CollisionDetection : MonoBehaviour
         GameObject collidedObject = other.gameObject;
         if (!collidedObject.CompareTag("Untagged") && !isGameOver) //if the player hits something important while the game is running...
         {
-            Destroy(collidedObject); //destroy the thing
+
             switch(collidedObject.tag)
             {
                 case "Bullet": //If the player hits a bullet...
@@ -62,25 +62,27 @@ public class CollisionDetection : MonoBehaviour
                     if (!PlayerControllerScript.isHiding) //If the player is not hidden...
                     {
                         gameManagerScript.UpdateLives(-1); //... Lose a life.
-
-                        // if (gameManagerScript.lives <= 0) //If the player is dead...
-                        // {
-                        //     gameManagerScript.lives = 0; //set lives to 0 (just in case it went negative).
-                        //     isGameOver = true; //... End the game.
-                        //     Debug.Log("Game Over. Time: " + gameManagerScript.playTime + ". Score: " + score + "."); //debug message.
-                        //     gameOverScreen.SetActive(true);
-                        // }
+                    }
+                    else //if the player is hiding...
+                    {
+                        StartCoroutine(PlayClink(Random.Range(1,4)));
                     }
                     break;
                 case "LifePickup": //If the player hits a 1-Up...
-                    //... Add a life.
-                    gameManagerScript.UpdateLives(1);
+                    gameManagerScript.UpdateLives(1); //... Add a life.
+                    gameManagerScript.UpdateScore(1000); //... Add 1000 score.
+                    PlaySqueak();
                     break;
                 
                 case "SpeedPickup": //If the player hits a Speed boost...
                     //... Speed up the player.
-                    PlayerControllerScript.speed += 0.5f;
+                    if (PlayerControllerScript.speed <= 15)
+                    {
+                        PlayerControllerScript.speed += 1.0f;
+                    }
                     Debug.Log("Speed Pickup collected. Effect: Speed Up. Current Speed: " + PlayerControllerScript.speed);
+                    gameManagerScript.UpdateScore(1000); //... Add 1000 score.
+                    PlaySqueak();
                     break;
                 
                 case "ScorePickup": //If the player hits a Score Multiplier...
@@ -89,11 +91,33 @@ public class CollisionDetection : MonoBehaviour
                     bonusMultiplier = Mathf.RoundToInt( bonusMultiplier + 4.3f - (5 / (gameManagerScript.playTime / 20 + 1)) + 1 / ((gameManagerScript.playTime / 10) + 1) ); //The bonus multiplier has a maximum value 5. The multiplier will start at x1 (at game start), and it will be larger based on how long the round has been going on. This bonus is stackable (additive).
                     StartCoroutine(BonusMultiplierCountdownRoutine());
                     Debug.Log("Score Pickup collected. Effect: Temporary Bonus Multiplier. Current Score Multiplier: " + bonusMultiplier);
+                    PlaySqueak();
+                    gameManagerScript.UpdateScore(1000); //... Add 1000 score.
                     break;
             }
+            Destroy(collidedObject); //destroy the thing
         }
     }
+    //Plays the squeak.
+    void PlaySqueak()
+    {
+      audioController.clip = squeak;
+      audioController.time = 0.0f;
+      audioController.volume = 1.0f;
+      audioController.Play();
+    }
+    //Play the clink.
+    IEnumerator PlayClink(int version)
+    {
+      audioController.clip = clink;
+      audioController.time = 2.0f * version;
+      audioController.volume = 0.2f;
+      audioController.Play();
+      yield return new WaitForSeconds(0.5f);
+      audioController.Stop();
+    }
 
+    //Start the Bonus Multiplier countdown
     IEnumerator BonusMultiplierCountdownRoutine()
     {
         yield return new WaitForSeconds(10); //wait 10 seconds

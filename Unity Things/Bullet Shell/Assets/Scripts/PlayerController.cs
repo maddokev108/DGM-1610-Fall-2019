@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameObject shell; //the object that will be used as the visual cue for when the player is hiding in their shell.
+
     private float xBound = 17.8f; //left-right screen bounds
     private float zBound = 10.0f; //top-bottom screen bounds
 
@@ -20,7 +22,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // ToggleCursorOff();
+        shell = GameObject.Find("Shell"); //find the shell.
+        shell.SetActive(false); //hide the shell.
     }
 
     // Update is called once per frame
@@ -39,19 +42,6 @@ public class PlayerController : MonoBehaviour
             transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
 
 
-
-            // if(Input.GetKeyUp("left ctrl"))
-            // {
-            //     if (cursorToggledOff) //if the cursor is currently locked...
-            //     {   
-            //         ToggleCursorOn(); //... unlock it.
-            //     }
-            //     else //If the cursor is currently unlocked...
-            //     {
-            //         ToggleCursorOff(); //... lock it.
-            //     }
-            // }
-
             if (Mathf.Abs(xPos) > xBound) //if the player is out of bounds (x)...
             {
                 transform.position = new Vector3(xBound * Mathf.Abs(xPos) / xPos, 0.492f, zPos); //...bring them back on-screen (x)
@@ -62,7 +52,7 @@ public class PlayerController : MonoBehaviour
             }
 
 
-
+            //Hiding mechanic
             if (!isHiding) //If the player is not hiding...
             {
                 previousSpeed = speed; //... Save the player's speed
@@ -71,30 +61,18 @@ public class PlayerController : MonoBehaviour
                 {
                     speed = 0; //...Stop the player from moving
                     isHiding = true; //update bool.
+                    shell.SetActive(true);
                 }
-                else //Otherwise...
-                {
-                    speed = previousSpeed; //... Let the player move again.
-                    isHiding = false; //update bool.
-                }
+
+            }
+            else if ( Input.GetAxisRaw("Hide") == 0 ) //Otherwise...
+            {
+                speed = previousSpeed; //... Let the player move again.
+                isHiding = false; //update bool.
+                shell.SetActive(false); //hide the shell.
+
             }
         }
-        else{
-            // ToggleCursorOn();
-        }
+
     }
-
-    // //locks the cursor
-    // void ToggleCursorOff()
-    // {
-    //         Cursor.lockState = CursorLockMode.Locked; //lock it.
-    //         cursorToggledOff = true; //update bool.
-    // }
-
-    // //unlocks the cursor
-    // void ToggleCursorOn()
-    // {
-    //     Cursor.lockState = CursorLockMode.None; //unlock it.
-    //     cursorToggledOff = false; //update bool
-    // }
 }

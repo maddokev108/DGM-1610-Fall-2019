@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
   ---------*/
     private GameObject menuScreen; //Menu Screen
     private GameObject gameOverScreen; //Game Over Screen
+    private GameObject helpScreen; //Help Screen
     private GameObject player; //player reference;
     private PlayerController playerControllerScript; //PlayerController script reference
     private CollisionDetection playerCollisionDetectionScript; //CollisionDetection script reference
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
     internal int lives; //lives
     internal int score; //score
     internal bool isGameOver; //tracks if the game is over or not
-    internal float playTime; //meant to be like Time.time, but only starts running when the game actually starts being played. Accuracy to 0.001 seconds.
+    [SerializeField]internal float playTime; //meant to be like Time.time, but only starts running when the game actually starts being played. Accuracy to 0.001 seconds.
     internal bool cursorToggledOff; //tracks whether or not the cursor is enabled.
 
 
@@ -52,19 +53,23 @@ public class GameManager : MonoBehaviour
     Unity Functions
 =====================*/
 
-    //Awake runs before Start.
-    void Awake()
+    void Start()
     {
+        isGameOver = true;   
+
         gameOverScreen = GameObject.Find("Game Over Screen"); //find the Game Over Screen object.
         menuScreen = GameObject.Find("Menu Screen"); //Find the Menu Screen object.
+        helpScreen = GameObject.Find("Help Screen"); //find the Help Screen object.
         player = GameObject.Find("Player"); //find the Player object.
         playerControllerScript = player.GetComponent<PlayerController>(); //find the player's PlayerController script.
         playerCollisionDetectionScript = playerCollisionDetectionScript = player.GetComponent<CollisionDetection>(); //find the player's CollisionDetection script.
 
         gameOverScreen.SetActive(false); //hide the Game Over Screen.
-
+        helpScreen.SetActive(false); //hide the Help Screen.
+        player.SetActive(false); //Hide the player.
+        GameObject shell = player.transform.Find("Shell").gameObject; //find the shell
+        shell.SetActive(false); //hide the shell.
     }
-
     void Update()
     {
         // isGameOver = playerCollisionDetectionScript.isGameOver; //check if the game has ended yet
@@ -100,7 +105,7 @@ public class GameManager : MonoBehaviour
         lives = 7; //Set the player's starting lives.
         score = 0; //Set the score to zero.
         isGameOver = false; //The game is running.
-        
+        player.transform.position = new Vector3(0.0f, player.transform.position.y, 0.0f);
 
 
         /*~~~~~~~~~~~~~~~~
@@ -108,6 +113,7 @@ public class GameManager : MonoBehaviour
         ~~~~~~~~~~~~~~~~*/
         //methods & functions
         menuScreen.SetActive(false); //Hide the main menu.
+        player.SetActive(true); //show the player
         gameObject.GetComponent<SpawnPickups>().StartSpawning();
         gameObject.GetComponent<SpawnPatterns>().StartSpawning();
 
@@ -135,6 +141,21 @@ public class GameManager : MonoBehaviour
         ToggleCursorOn(); //unlock the cursor.
     }
 
+    //shows the help screen. runs when the "Help" button is clicked in the main menu.
+    public void DisplayHelpScreen()
+    {
+      menuScreen.SetActive(false);
+      helpScreen.SetActive(true);
+      player.SetActive(true);
+    }
+
+    //returns to the main menu. runs when the "Close Help" button is clicked in the help menu.
+    public void CloseHelpScreen()
+    {
+      menuScreen.SetActive(true);
+      helpScreen.SetActive(false);
+      player.SetActive(false);
+    }
 
   /*-----------------
     Lives and Score
@@ -162,6 +183,7 @@ public class GameManager : MonoBehaviour
         {
             lives = 0; //set lives to 0 (just in case it went negative).
             livesText.text = "lives: " + lives; //display the new value.
+            GameOver();
         }
     }
 
@@ -171,14 +193,16 @@ public class GameManager : MonoBehaviour
     //locks the cursor
     public void ToggleCursorOff()
     {
-            Cursor.lockState = CursorLockMode.Locked; //lock it.
-            cursorToggledOff = true; //update bool.
+      Cursor.lockState = CursorLockMode.Locked; //lock it.
+      Cursor.visible = false;
+      cursorToggledOff = true; //update bool.
     }
 
     //unlocks the cursor
     public void ToggleCursorOn()
     {
         Cursor.lockState = CursorLockMode.None; //unlock it.
+        Cursor.visible = true;
         cursorToggledOff = false; //update bool
     }
 
@@ -191,8 +215,8 @@ public class GameManager : MonoBehaviour
     {
         while (!isGameOver)
         {
-            yield return new WaitForSeconds(0.001f);
-            playTime += 0.001f;
+            yield return new WaitForSeconds(0.1f);
+            playTime += 0.1f;
         }
     }
 

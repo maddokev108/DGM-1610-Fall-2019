@@ -28,6 +28,8 @@ using UnityEngine;
              6. Calculates Z as radius*sin(theta)
             EXITS THE IF-ELSE-IF
              7. Moves the bullet to the new X/Z coordinates.
+
+      - Also manages the bullet's "clink" sound effect.
  */
 
 public class BulletMovement : MonoBehaviour
